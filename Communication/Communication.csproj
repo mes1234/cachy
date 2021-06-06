@@ -4,4 +4,18 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="google.protobuf" Version="3.17.2" />
+    <PackageReference Include="Grpc.Core" Version="2.38.0" />
+    <PackageReference Include="grpc.tools" Version="2.38.0">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="..\Protos\*.proto" GrpcServices="Server" />
+  </ItemGroup>
+  
 </Project>
