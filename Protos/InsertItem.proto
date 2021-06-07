@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+option csharp_namespace = "Cachy.Events";
+
+message UUID {
+  string value = 1;
+}
+
+message TimeToLive {
+  int64 seconds = 1;
+}
+
+message Item {
+  // seconds to keep item in system
+  TimeToLive ttl = 2;
+  // name of item
+  string name = 4;
+  // content of item
+  bytes data = 5;
+}
+
+message Ack {
+  // revision of item of interest
+  int32 revision = 1;
+}
+
+service InsertItem {
+  // Add or update item in system
+  rpc InsertItem(Item) returns (Ack);
+}

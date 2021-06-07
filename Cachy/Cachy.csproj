@@ -11,5 +11,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Communication\Communication.csproj" />
+    <ProjectReference Include="..\Dispatcher\Dispatcher.csproj" />
+    <ProjectReference Include="..\Storage\Storage.csproj" />
+     <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
 </Project>

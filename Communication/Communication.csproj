@@ -17,5 +17,9 @@
   <ItemGroup>
     <Protobuf Include="..\Protos\*.proto" GrpcServices="Server" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj" />
+  </ItemGroup>
   
 </Project>

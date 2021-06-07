@@ -2,9 +2,9 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using Cachy.Events;
 
-namespace Cachy.Communication
+namespace Cachy.Communication.Services
 {
-    class PingPongImpl : PingPong.PingPongBase
+    class PingPongService : PingPong.PingPongBase
     {
 
         public override Task<Pong> PingPong(Ping request, ServerCallContext context)

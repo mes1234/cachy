@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Grpc.Core;
 using Microsoft.Extensions.Hosting;
 using Cachy.Events;
+using Cachy.Communication.Services;
 
 namespace Cachy.Communication
 {
@@ -21,7 +22,10 @@ namespace Cachy.Communication
         {
             Server server = new Server
             {
-                Services = { PingPong.BindService(new PingPongImpl()) },
+                Services = {
+                    PingPong.BindService(new PingPongService()),
+                    InsertItem.BindService(new  InsertItemService())
+                 },
                 Ports = { new ServerPort(_host, _port, ServerCredentials.Insecure) }
             };
             await Task.Run(() => server.Start());
