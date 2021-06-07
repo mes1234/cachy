@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-option csharp_namespace = "Communication";
+option csharp_namespace = "Cachy.Events";
 
 message Ping {
   string message = 1;

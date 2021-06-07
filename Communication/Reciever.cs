@@ -3,8 +3,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Microsoft.Extensions.Hosting;
+using Cachy.Events;
 
-namespace Communication
+namespace Cachy.Communication
 {
     public class Reciever : BackgroundService
     {

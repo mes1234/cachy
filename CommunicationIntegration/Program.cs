@@ -1,8 +1,8 @@
 ﻿using System;
 using Grpc.Core;
-using Communication;
+using Cachy.Events;
 
-namespace CommunicationIntegration
+namespace Cachy.CommunicationIntegration
 {
     class Program
     {
