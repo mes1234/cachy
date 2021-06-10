@@ -13,16 +13,31 @@ namespace Cachy.Dispatcher
     {
 
         private readonly ConcurrentBag<IHandler> _handlers;
-        public Orchestrator(ConcurrentBag<IHandler> handlers)
+        private readonly ConcurrentQueue<ItemEntinty> _queue;
+        public Orchestrator(ConcurrentBag<IHandler> handlers, ConcurrentQueue<ItemEntinty> Queue)
         {
             _handlers = handlers;
+            _queue = Queue;
+        }
+
+        public Task Schedule(ItemEntinty item)
+        {
+            return Task.CompletedTask;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (stoppingToken.IsCancellationRequested != true)
             {
-                await Task.Delay(100);
+                ItemEntinty item;
+                if (_queue.TryDequeue(out item))
+                {
+                    await Schedule(item);
+                }
+                else
+                {
+                    await Task.Delay(10);
+                }
             }
         }
     }

@@ -8,14 +8,18 @@ using Cachy.Common;
 
 namespace Cachy.Storage
 {
-    public class BookKeeper : BackgroundService
+    public class BookKeeper : BackgroundService, IHandler
     {
         private readonly ConcurrentBag<IHandler> _handlers;
         public BookKeeper(ConcurrentBag<IHandler> handlers)
         {
-            //  handlers.Add
+            handlers.Add(this);
         }
 
+        public Task Handle<T>(T item)
+        {
+            throw new NotImplementedException();
+        }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
