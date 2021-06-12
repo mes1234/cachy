@@ -23,13 +23,16 @@ namespace Cachy
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    // container for all possible handlers
-                    services.AddSingleton<ConcurrentBag<IHandler>>(new ConcurrentBag<IHandler>());
-                    // central message bus for system
+                    // container for all possible handlers for new messages
+                    services.AddSingleton<ConcurrentBag<IHandler<ItemEntinty>>>(new ConcurrentBag<IHandler<ItemEntinty>>());
+                    // central message bus for system - new items added
                     services.AddSingleton<ConcurrentQueue<ItemEntinty>>(new ConcurrentQueue<ItemEntinty>());
+                    // central message bus for system - new request for items
+                    services.AddSingleton<ConcurrentQueue<RequestForItem>>(new ConcurrentQueue<RequestForItem>());
                     services.AddHostedService<Reciever>();
                     services.AddHostedService<Orchestrator>();
-                    services.AddHostedService<BookKeeper>();
+                    services.AddHostedService<LongTermStorage>();
+                    services.AddHostedService<SnapshotStorage>();
                 });
     }
 }

@@ -12,17 +12,20 @@ namespace Cachy.Dispatcher
     public class Orchestrator : BackgroundService
     {
 
-        private readonly ConcurrentBag<IHandler> _handlers;
+        private readonly ConcurrentBag<IHandler<ItemEntinty>> _handlers;
         private readonly ConcurrentQueue<ItemEntinty> _queue;
-        public Orchestrator(ConcurrentBag<IHandler> handlers, ConcurrentQueue<ItemEntinty> Queue)
+        public Orchestrator(ConcurrentBag<IHandler<ItemEntinty>> handlers, ConcurrentQueue<ItemEntinty> Queue)
         {
             _handlers = handlers;
             _queue = Queue;
         }
 
-        public Task Schedule(ItemEntinty item)
+        public async Task ScheduleAdding(ItemEntinty item)
         {
-            return Task.CompletedTask;
+            foreach (var handler in _handlers)
+            {
+                await handler.Handle(item);
+            }
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -32,7 +35,7 @@ namespace Cachy.Dispatcher
                 ItemEntinty item;
                 if (_queue.TryDequeue(out item))
                 {
-                    await Schedule(item);
+                    await ScheduleAdding(item);
                 }
                 else
                 {

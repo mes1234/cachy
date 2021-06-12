@@ -5,18 +5,26 @@ using Microsoft.Extensions.Hosting;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using Cachy.Common;
+using Cachy.Storage.EventSource;
 
 namespace Cachy.Storage
 {
-    public class BookKeeper : BackgroundService, IHandler
+    public class LongTermStorage : BackgroundService, IHandler<ItemEntinty>, IHandler<RequestForItem>
     {
-        private readonly ConcurrentBag<IHandler> _handlers;
-        public BookKeeper(ConcurrentBag<IHandler> handlers)
+
+        private readonly Repository<ItemEntinty> _repository = new();
+        public LongTermStorage(ConcurrentBag<IHandler<ItemEntinty>> handlers)
         {
             handlers.Add(this);
         }
 
-        public Task Handle<T>(T item)
+        public Task Handle(ItemEntinty item)
+        {
+            _repository.Add(item);
+            return Task.CompletedTask;
+        }
+
+        public Task Handle(RequestForItem item)
         {
             throw new NotImplementedException();
         }

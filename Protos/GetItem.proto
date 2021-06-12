@@ -1,0 +1,19 @@
+syntax = "proto3";
+import "InsertItem.proto";
+
+option csharp_namespace = "Cachy.Events";
+
+message ItemToRetrieve {
+  string name = 1;
+  optional int32  revision = 2;
+}
+
+message RetrievedItem {
+  Item item = 1;
+  int32 revision = 2;
+}
+
+service GetItem {
+  // Retrieve requested item
+  rpc Get(ItemToRetrieve) returns (RetrievedItem);
+}
