@@ -12,17 +12,29 @@ namespace Cachy.Dispatcher
     public class Orchestrator : BackgroundService
     {
 
-        private readonly ConcurrentBag<IHandler<ItemEntinty>> _handlers;
-        private readonly ConcurrentQueue<ItemEntinty> _queue;
-        public Orchestrator(ConcurrentBag<IHandler<ItemEntinty>> handlers, ConcurrentQueue<ItemEntinty> Queue)
+        private readonly ConcurrentBag<IHandler<ItemEntinty>> _addHandlers;
+        private readonly ConcurrentBag<IHandler<RequestForItem>> _getHandlers;
+        private readonly ConcurrentQueue<IEntitie> _queue;
+        public Orchestrator(
+            ConcurrentBag<IHandler<ItemEntinty>> addHandlers,
+            ConcurrentBag<IHandler<RequestForItem>> getHandlers,
+             ConcurrentQueue<IEntitie> Queue)
         {
-            _handlers = handlers;
+            _addHandlers = addHandlers;
+            _getHandlers = getHandlers;
             _queue = Queue;
         }
 
         public async Task ScheduleAdding(ItemEntinty item)
         {
-            foreach (var handler in _handlers)
+            foreach (var handler in _addHandlers)
+            {
+                await handler.Handle(item);
+            }
+        }
+        public async Task ScheduleGetting(RequestForItem item)
+        {
+            foreach (var handler in _getHandlers)
             {
                 await handler.Handle(item);
             }
@@ -32,10 +44,21 @@ namespace Cachy.Dispatcher
         {
             while (stoppingToken.IsCancellationRequested != true)
             {
-                ItemEntinty item;
+                IEntitie item;
                 if (_queue.TryDequeue(out item))
                 {
-                    await ScheduleAdding(item);
+                    switch (item)
+                    {
+                        case ItemEntinty itemEntinty:
+                            await ScheduleAdding(itemEntinty);
+                            break;
+                        case RequestForItem requestForItem:
+                            await ScheduleGetting(requestForItem);
+                            break;
+                        default:
+                            throw new NotSupportedException("Not supported item in queue");
+                    };
+
                 }
                 else
                 {

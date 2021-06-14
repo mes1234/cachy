@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace Cachy.Common
 {
@@ -6,5 +7,6 @@ namespace Cachy.Common
     {
         public int Revision { get; init; }
         public string Name { get; init; }
+        public object Result { get; set; }
     }
 }

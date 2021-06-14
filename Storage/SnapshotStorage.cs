@@ -12,9 +12,12 @@ namespace Cachy.Storage
     public class SnapshotStorage : BackgroundService, IHandler<ItemEntinty>, IHandler<RequestForItem>
     {
         private readonly Snapshot<ItemEntinty> _snapshot = new();
-        public SnapshotStorage(ConcurrentBag<IHandler<ItemEntinty>> handlers)
+        public SnapshotStorage(
+            ConcurrentBag<IHandler<ItemEntinty>> addHandlers,
+            ConcurrentBag<IHandler<RequestForItem>> getHandlers)
         {
-            handlers.Add(this);
+            addHandlers.Add(this);
+            getHandlers.Add(this);
         }
 
         public Task Handle(ItemEntinty item)
@@ -25,7 +28,8 @@ namespace Cachy.Storage
 
         public Task Handle(RequestForItem item)
         {
-            throw new NotImplementedException();
+            item.Result = _snapshot.Get(item.Name);
+            return Task.CompletedTask;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)

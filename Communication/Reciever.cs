@@ -14,16 +14,14 @@ namespace Cachy.Communication
     public class Reciever : BackgroundService
     {
         private readonly int _port;
-        private readonly ConcurrentQueue<ItemEntinty> _queueIn;
-        private readonly ConcurrentQueue<RequestForItem> _queueOut;
+        private readonly ConcurrentQueue<IEntitie> _queue;
         private readonly string _host;
 
-        public Reciever(ConcurrentQueue<ItemEntinty> QueueIn, ConcurrentQueue<RequestForItem> QueueOut, int Port = 5001, string Host = "localhost")
+        public Reciever(ConcurrentQueue<IEntitie> Queue, int Port = 5001, string Host = "localhost")
         {
             _port = Port;
             _host = Host;
-            _queueIn = QueueIn;
-            _queueOut = QueueOut;
+            _queue = Queue;
 
         }
 
@@ -33,8 +31,8 @@ namespace Cachy.Communication
             {
                 Services = {
                     PingPong.BindService(new PingPongService()),
-                    InsertItem.BindService(new  InsertItemService(_queueIn)),
-                    GetItem.BindService(new GetItemService(_queueOut))
+                    InsertItem.BindService(new  InsertItemService(_queue)),
+                    GetItem.BindService(new GetItemService(_queue))
                  },
                 Ports = { new ServerPort(_host, _port, ServerCredentials.Insecure) }
             };
