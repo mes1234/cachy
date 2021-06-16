@@ -37,7 +37,7 @@ namespace Cachy.Dispatcher
                 IEntitie item;
                 if (_queue.TryDequeue(out item))
                 {
-                    await Schedule<IEntitie>(item);
+                    await Schedule(item);
                 }
                 else
                 {
