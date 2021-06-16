@@ -9,22 +9,22 @@ using Cachy.Storage.EventSource;
 
 namespace Cachy.Storage
 {
-    public class LongTermStorage : BackgroundService, IHandler<ItemEntinty>, IHandler<RequestForItem>
+    public class LongTermStorage : BackgroundService, IHandler
     {
 
         private readonly Repository<ItemEntinty> _repository = new();
-        public LongTermStorage(ConcurrentBag<IHandler<ItemEntinty>> handlers)
+        public LongTermStorage(ConcurrentBag<IHandler> handlers)
         {
             handlers.Add(this);
         }
 
-        public Task Handle(ItemEntinty item)
+        public Task handle(ItemEntinty item)
         {
             _repository.Add(item);
             return Task.CompletedTask;
         }
 
-        public Task Handle(RequestForItem item)
+        private Task handle(RequestForItem item)
         {
             throw new NotImplementedException();
         }
@@ -34,6 +34,21 @@ namespace Cachy.Storage
             while (stoppingToken.IsCancellationRequested != true)
             {
                 await Task.Delay(100);
+            }
+        }
+
+        public async Task Handle(IEntitie item)
+        {
+            switch (item)
+            {
+                case ItemEntinty itemEntinty:
+                    await handle(itemEntinty);
+                    break;
+                case RequestForItem requestForItem:
+                    await handle(requestForItem);
+                    break;
+                default:
+                    throw new NotSupportedException("Not supported item in queue");
             }
         }
     }

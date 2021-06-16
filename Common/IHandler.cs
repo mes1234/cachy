@@ -2,8 +2,8 @@ using System.Threading.Tasks;
 
 namespace Cachy.Common
 {
-    public interface IHandler<T>
+    public interface IHandler
     {
-        Task Handle(T item);
+        Task Handle(IEntitie item);
     }
 }

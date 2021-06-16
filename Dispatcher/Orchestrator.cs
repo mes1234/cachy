@@ -12,29 +12,19 @@ namespace Cachy.Dispatcher
     public class Orchestrator : BackgroundService
     {
 
-        private readonly ConcurrentBag<IHandler<ItemEntinty>> _addHandlers;
-        private readonly ConcurrentBag<IHandler<RequestForItem>> _getHandlers;
+        private readonly ConcurrentBag<IHandler> _handlers;
         private readonly ConcurrentQueue<IEntitie> _queue;
         public Orchestrator(
-            ConcurrentBag<IHandler<ItemEntinty>> addHandlers,
-            ConcurrentBag<IHandler<RequestForItem>> getHandlers,
-             ConcurrentQueue<IEntitie> Queue)
+            ConcurrentBag<IHandler> Handlers,
+            ConcurrentQueue<IEntitie> Queue)
         {
-            _addHandlers = addHandlers;
-            _getHandlers = getHandlers;
+            _handlers = Handlers;
             _queue = Queue;
         }
-
-        public async Task ScheduleAdding(ItemEntinty item)
+        public async Task Schedule<T>(T item)
+        where T : IEntitie
         {
-            foreach (var handler in _addHandlers)
-            {
-                await handler.Handle(item);
-            }
-        }
-        public async Task ScheduleGetting(RequestForItem item)
-        {
-            foreach (var handler in _getHandlers)
+            foreach (var handler in _handlers)
             {
                 await handler.Handle(item);
             }
@@ -47,18 +37,7 @@ namespace Cachy.Dispatcher
                 IEntitie item;
                 if (_queue.TryDequeue(out item))
                 {
-                    switch (item)
-                    {
-                        case ItemEntinty itemEntinty:
-                            await ScheduleAdding(itemEntinty);
-                            break;
-                        case RequestForItem requestForItem:
-                            await ScheduleGetting(requestForItem);
-                            break;
-                        default:
-                            throw new NotSupportedException("Not supported item in queue");
-                    };
-
+                    await Schedule<IEntitie>(item);
                 }
                 else
                 {

@@ -9,27 +9,40 @@ using Cachy.Storage.EventSource;
 
 namespace Cachy.Storage
 {
-    public class SnapshotStorage : BackgroundService, IHandler<ItemEntinty>, IHandler<RequestForItem>
+    public class SnapshotStorage : BackgroundService, IHandler
     {
         private readonly Snapshot<ItemEntinty> _snapshot = new();
         public SnapshotStorage(
-            ConcurrentBag<IHandler<ItemEntinty>> addHandlers,
-            ConcurrentBag<IHandler<RequestForItem>> getHandlers)
+            ConcurrentBag<IHandler> handlers)
         {
-            addHandlers.Add(this);
-            getHandlers.Add(this);
+            handlers.Add(this);
         }
 
-        public Task Handle(ItemEntinty item)
+        private Task handle(ItemEntinty item)
         {
             _snapshot.Add(item);
             return Task.CompletedTask;
         }
 
-        public Task Handle(RequestForItem item)
+        private Task handle(RequestForItem item)
         {
             item.Result = _snapshot.Get(item.Name);
             return Task.CompletedTask;
+        }
+
+        public async Task Handle(IEntitie item)
+        {
+            switch (item)
+            {
+                case ItemEntinty itemEntinty:
+                    await handle(itemEntinty);
+                    break;
+                case RequestForItem requestForItem:
+                    await handle(requestForItem);
+                    break;
+                default:
+                    throw new NotSupportedException("Not supported item in queue");
+            }
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)

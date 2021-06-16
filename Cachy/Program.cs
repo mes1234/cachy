@@ -24,8 +24,7 @@ namespace Cachy
                 .ConfigureServices((hostContext, services) =>
                 {
                     // containers for handlers
-                    services.AddSingleton<ConcurrentBag<IHandler<ItemEntinty>>>(new ConcurrentBag<IHandler<ItemEntinty>>());
-                    services.AddSingleton<ConcurrentBag<IHandler<RequestForItem>>>(new ConcurrentBag<IHandler<RequestForItem>>());
+                    services.AddSingleton<ConcurrentBag<IHandler>>(new ConcurrentBag<IHandler>());
                     // central message bus for system 
                     services.AddSingleton<ConcurrentQueue<IEntitie>>(new ConcurrentQueue<IEntitie>());
                     services.AddHostedService<Reciever>();
