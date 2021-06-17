@@ -1,7 +1,7 @@
 namespace Cachy.Common
 {
 
-    public interface IEntitie
+    public interface IEntity
     {
         public string Name { get; init; }
     }

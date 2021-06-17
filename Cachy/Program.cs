@@ -9,6 +9,9 @@ using Cachy.Dispatcher;
 using Cachy.Storage;
 using System.Collections.Concurrent;
 using Cachy.Common;
+using Cachy.Storage.EventSource;
+using System.Collections;
+
 namespace Cachy
 {
     public class Program
@@ -23,10 +26,13 @@ namespace Cachy
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
+                    services.AddTransient<Repository<StoredItemEntity>>();
+                    services.AddTransient(typeof(IEvents<>), typeof(Events<>));
+                    services.AddTransient(typeof(Dictionary<,>));
                     // containers for handlers
                     services.AddSingleton<ConcurrentBag<IHandler>>(new ConcurrentBag<IHandler>());
                     // central message bus for system 
-                    services.AddSingleton<ConcurrentQueue<IEntitie>>(new ConcurrentQueue<IEntitie>());
+                    services.AddSingleton<ConcurrentQueue<IEntity>>(new ConcurrentQueue<IEntity>());
                     services.AddHostedService<Reciever>();
                     services.AddHostedService<Orchestrator>();
                     services.AddHostedService<LongTermStorage>();

@@ -5,31 +5,35 @@ using Cachy.Common;
 namespace Cachy.Storage.EventSource
 {
     public class Repository<T>
-        where T : IEntitie
+        where T : IStoredEntity
     {
-        private readonly Dictionary<string, List<T>> registry = new();
+
+        private readonly Dictionary<string, IEvents<T>> _registry;
+
+        public Repository(Dictionary<string, IEvents<T>> Registry)
+        {
+            _registry = Registry;
+        }
+
+
 
         public void Add(T item)
         {
-            if (registry.ContainsKey(item.Name))
-            {
-                registry[item.Name].Add(item);
-            }
+            if (_registry.ContainsKey(item.Name))
+                _registry[item.Name].Add(item);
             else
-            {
-                registry[item.Name] = new List<T> { item };
-            }
+                _registry[item.Name] = new Events<T> { item };
         }
 
         public T Get(string name, int revison)
         {
-            if (!registry.ContainsKey(name))
+            if (!_registry.ContainsKey(name))
                 return default(T);
 
-            if (registry[name].Count < revison)
+            if (_registry[name].Count < revison)
                 return default(T);
 
-            return registry[name][revison];
+            return _registry[name][revison];
         }
     }
 }

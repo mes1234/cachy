@@ -4,13 +4,14 @@ using Google.Protobuf;
 using Cachy.Events;
 using Cachy.Common;
 using System.Collections.Concurrent;
+using System.Threading;
 
 namespace Cachy.Communication.Services
 {
     class GetItemService : GetItem.GetItemBase
     {
-        private readonly ConcurrentQueue<IEntitie> _queue;
-        public GetItemService(ConcurrentQueue<IEntitie> Queue)
+        private readonly ConcurrentQueue<IEntity> _queue;
+        public GetItemService(ConcurrentQueue<IEntity> Queue)
         {
             _queue = Queue;
         }
@@ -28,7 +29,7 @@ namespace Cachy.Communication.Services
 
             while (item.Result == null)
             {
-                await Task.Delay(10);
+                await Task.Delay(0);
             }
 
             var res = (ItemEntinty)item.Result;

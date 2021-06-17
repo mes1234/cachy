@@ -8,8 +8,8 @@ namespace Cachy.Communication.Services
 {
     class InsertItemService : InsertItem.InsertItemBase
     {
-        private readonly ConcurrentQueue<IEntitie> _queue;
-        public InsertItemService(ConcurrentQueue<IEntitie> Queue)
+        private readonly ConcurrentQueue<IEntity> _queue;
+        public InsertItemService(ConcurrentQueue<IEntity> Queue)
         {
             _queue = Queue;
         }

@@ -26,11 +26,14 @@ namespace Cachy.Storage
 
         private Task handle(RequestForItem item)
         {
-            item.Result = _snapshot.Get(item.Name);
-            return Task.CompletedTask;
+            lock (item)
+            {
+                item.Result = _snapshot.Get(item.Name);
+                return Task.CompletedTask;
+            }
         }
 
-        public async Task Handle(IEntitie item)
+        public async Task Handle(IEntity item)
         {
             switch (item)
             {

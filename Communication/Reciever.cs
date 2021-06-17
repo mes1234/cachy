@@ -14,10 +14,10 @@ namespace Cachy.Communication
     public class Reciever : BackgroundService
     {
         private readonly int _port;
-        private readonly ConcurrentQueue<IEntitie> _queue;
+        private readonly ConcurrentQueue<IEntity> _queue;
         private readonly string _host;
 
-        public Reciever(ConcurrentQueue<IEntitie> Queue, int Port = 5001, string Host = "localhost")
+        public Reciever(ConcurrentQueue<IEntity> Queue, int Port = 5001, string Host = "localhost")
         {
             _port = Port;
             _host = Host;

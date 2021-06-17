@@ -13,16 +13,16 @@ namespace Cachy.Dispatcher
     {
 
         private readonly ConcurrentBag<IHandler> _handlers;
-        private readonly ConcurrentQueue<IEntitie> _queue;
+        private readonly ConcurrentQueue<IEntity> _queue;
         public Orchestrator(
             ConcurrentBag<IHandler> Handlers,
-            ConcurrentQueue<IEntitie> Queue)
+            ConcurrentQueue<IEntity> Queue)
         {
             _handlers = Handlers;
             _queue = Queue;
         }
         public async Task Schedule<T>(T item)
-        where T : IEntitie
+        where T : IEntity
         {
             foreach (var handler in _handlers)
             {
@@ -34,14 +34,14 @@ namespace Cachy.Dispatcher
         {
             while (stoppingToken.IsCancellationRequested != true)
             {
-                IEntitie item;
+                IEntity item;
                 if (_queue.TryDequeue(out item))
                 {
                     await Schedule(item);
                 }
                 else
                 {
-                    await Task.Delay(10);
+                    Thread.Sleep(0);
                 }
             }
         }

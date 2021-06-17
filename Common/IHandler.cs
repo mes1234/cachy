@@ -4,6 +4,6 @@ namespace Cachy.Common
 {
     public interface IHandler
     {
-        Task Handle(IEntitie item);
+        Task Handle(IEntity item);
     }
 }

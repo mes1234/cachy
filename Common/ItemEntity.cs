@@ -2,7 +2,7 @@
 
 namespace Cachy.Common
 {
-    public record ItemEntinty : IEntitie
+    public record ItemEntinty : IEntity
     {
         public DateTime Timestamp { get; init; }
         public string Name { get; init; }
@@ -10,8 +10,8 @@ namespace Cachy.Common
         public byte[] Data { get; init; }
     }
 
-    public record RetrievedItemEntinity : ItemEntinty
+    public record StoredItemEntity : ItemEntinty, IStoredEntity
     {
-        public int Revision { get; init; }
+        public int Revision { get; set; }
     }
 }
