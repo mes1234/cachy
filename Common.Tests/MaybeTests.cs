@@ -19,8 +19,8 @@ namespace Common.Tests
             validator.Validate(Arg.Any<string>()).Returns(true);
             converter.Convert(Arg.Any<string>()).Returns(x => x[0]);
 
-            var maybe = new Maybe<string, string>("dummy", validator, converter);
-
+            var maybe = new Maybe<string, string>(validator, converter);
+            maybe.Value = "dummy";
             Assert.True(maybe);
         }
 
@@ -30,8 +30,8 @@ namespace Common.Tests
             validator.Validate(Arg.Any<string>()).Returns(false);
             converter.Convert(Arg.Any<string>()).Returns(x => x[0]);
 
-            var maybe = new Maybe<string, string>("dummy", validator, converter);
-
+            var maybe = new Maybe<string, string>(validator, converter);
+            maybe.Value = "dummy";
             Assert.False(maybe);
         }
 
@@ -42,8 +42,8 @@ namespace Common.Tests
             validator.Validate(Arg.Any<string>()).Returns(true);
             converter.Convert(Arg.Any<string>()).Returns(x => x[0]);
 
-            var maybe = new Maybe<string, string>(input, validator, converter);
-
+            var maybe = new Maybe<string, string>(validator, converter);
+            maybe.Value = input;
             string data = maybe;
             Assert.Equal(data, input);
         }
@@ -55,8 +55,8 @@ namespace Common.Tests
             converter.Convert(Arg.Any<string>()).Returns(x => x[0]);
 
 
-            var maybe = new Maybe<string, string>(input, validator, converter);
-
+            var maybe = new Maybe<string, string>(validator, converter);
+            maybe.Value = input;
             Assert.Throws<NotValidException>(() =>
             {
                 string data = maybe;

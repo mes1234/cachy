@@ -3,7 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
+using Cachy.Common.Maybe;
 using Cachy.Common;
 using Cachy.Storage.EventSource;
 
@@ -13,7 +13,12 @@ namespace Cachy.Storage
     {
 
         private readonly Repository<StoredItemEntity> _repository;
-        public LongTermStorage(ConcurrentBag<IHandler> handlers, Repository<StoredItemEntity> Repository)
+
+        public LongTermStorage(
+            ConcurrentBag<IHandler> handlers,
+             Repository<StoredItemEntity> Repository,
+             MaybeFactory MaybeFactory
+             )
         {
             handlers.Add(this);
             _repository = Repository;
