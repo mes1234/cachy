@@ -1,6 +1,7 @@
 using System;
 using Cachy.Common.Validator;
 using Cachy.Common.Converter;
+using System.Collections.Generic;
 
 namespace Cachy.Common.Maybe
 {
@@ -18,14 +19,21 @@ namespace Cachy.Common.Maybe
         {
             get
             {
-                return _validator.Validate(this.Value);
+                foreach (var validator in _validators)
+                {
+                    if (!validator.Validate(this.Value))
+                        return false;
+                }
+                return true;
             }
         }
-        private IValidator<T, U> _validator;
+
+
+        private IEnumerable<IValidator<T, U>> _validators;
         private IConverter<T, U> _converter;
-        public Maybe(IValidator<T, U> validator, IConverter<T, U> converter)
+        public Maybe(IEnumerable<IValidator<T, U>> validators, IConverter<T, U> converter)
         {
-            _validator = validator;
+            _validators = validators;
             _converter = converter;
         }
         public static implicit operator bool(Maybe<T, U> m) => m._valid;

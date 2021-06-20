@@ -10,7 +10,10 @@ using Cachy.Storage;
 using System.Collections.Concurrent;
 using Cachy.Common;
 using Cachy.Storage.EventSource;
-using System.Collections;
+using Cachy.Common.Validator;
+using Cachy.Common.Validator.Implementation;
+using Cachy.Common.Maybe;
+using Cachy.Common.Converter;
 
 namespace Cachy
 {
@@ -26,6 +29,7 @@ namespace Cachy
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
+                    services.AddTransient<MaybeFactory>();
                     services.AddTransient<Repository<StoredItemEntity>>();
                     services.AddTransient(typeof(IEvents<>), typeof(Events<>));
                     services.AddTransient(typeof(Dictionary<,>));
@@ -37,6 +41,14 @@ namespace Cachy
                     services.AddHostedService<Orchestrator>();
                     services.AddHostedService<LongTermStorage>();
                     services.AddHostedService<SnapshotStorage>();
+
+                    services.AddTransient(typeof(Maybe<,>));
+                    services.AddTransient<IConverter<RequestForItem, RequestForItemValidated>, SimpleRequestConverter>();
+                    services.AddTransient<IValidator<RequestForItem, RequestForItemValidated>, LongTermStorageItemRequestForItem>();
+
+                    services.AddTransient<IConverter<ItemEntinty, LongTermStorageItemEntinty>, SimpleConverter>();
+                    services.AddTransient<IValidator<ItemEntinty, LongTermStorageItemEntinty>, LongTermStorageItemEntintyValidator>();
                 });
     }
 }
+

@@ -4,14 +4,20 @@ using Cachy.Common.Maybe;
 using Cachy.Common.Validator;
 using Cachy.Common.Converter;
 using NSubstitute;
-
+using System.Collections.Generic;
 
 namespace Common.Tests
 {
     public class MaybeTests
     {
         IValidator<string, string> validator = Substitute.For<IValidator<string, string>>();
+
+
         IConverter<string, string> converter = Substitute.For<IConverter<string, string>>();
+
+
+        private IEnumerable<T> EnumarableThis<T>(T item) => new List<T> { item };
+
         [Fact]
         public void MaybeTest_AlwaysValidates()
         {
@@ -19,7 +25,7 @@ namespace Common.Tests
             validator.Validate(Arg.Any<string>()).Returns(true);
             converter.Convert(Arg.Any<string>()).Returns(x => x[0]);
 
-            var maybe = new Maybe<string, string>(validator, converter);
+            var maybe = new Maybe<string, string>(EnumarableThis(validator), converter);
             maybe.Value = "dummy";
             Assert.True(maybe);
         }
@@ -30,7 +36,7 @@ namespace Common.Tests
             validator.Validate(Arg.Any<string>()).Returns(false);
             converter.Convert(Arg.Any<string>()).Returns(x => x[0]);
 
-            var maybe = new Maybe<string, string>(validator, converter);
+            var maybe = new Maybe<string, string>(EnumarableThis(validator), converter);
             maybe.Value = "dummy";
             Assert.False(maybe);
         }
@@ -42,7 +48,7 @@ namespace Common.Tests
             validator.Validate(Arg.Any<string>()).Returns(true);
             converter.Convert(Arg.Any<string>()).Returns(x => x[0]);
 
-            var maybe = new Maybe<string, string>(validator, converter);
+            var maybe = new Maybe<string, string>(EnumarableThis(validator), converter);
             maybe.Value = input;
             string data = maybe;
             Assert.Equal(data, input);
@@ -55,7 +61,7 @@ namespace Common.Tests
             converter.Convert(Arg.Any<string>()).Returns(x => x[0]);
 
 
-            var maybe = new Maybe<string, string>(validator, converter);
+            var maybe = new Maybe<string, string>(EnumarableThis(validator), converter);
             maybe.Value = input;
             Assert.Throws<NotValidException>(() =>
             {

@@ -13,25 +13,29 @@ namespace Cachy.Storage
     {
 
         private readonly Repository<StoredItemEntity> _repository;
+        private readonly MaybeFactory _maybeFactory;
 
         public LongTermStorage(
             ConcurrentBag<IHandler> handlers,
-             Repository<StoredItemEntity> Repository,
-             MaybeFactory MaybeFactory
+             Repository<StoredItemEntity> repository,
+             MaybeFactory maybeFactory
              )
         {
             handlers.Add(this);
-            _repository = Repository;
+            _repository = repository;
+            _maybeFactory = maybeFactory;
         }
 
         public Task handle(ItemEntinty item)
         {
+            LongTermStorageItemEntinty itemValidated = _maybeFactory.GetMaybe<ItemEntinty, LongTermStorageItemEntinty>(item);
+
             var storedItem = new StoredItemEntity
             {
-                Data = item.Data,
-                Name = item.Name,
-                Timestamp = item.Timestamp,
-                TTL = item.TTL
+                Data = itemValidated.Data,
+                Name = itemValidated.Name,
+                Timestamp = itemValidated.Timestamp,
+                TTL = itemValidated.TTL
             };
             _repository.Add(storedItem);
             return Task.CompletedTask;
@@ -41,10 +45,10 @@ namespace Cachy.Storage
         {
             lock (item)
             {
-                if (item.Revision > 0)
-                {
-                    item.Result = _repository.Get(item.Name, item.Revision);
-                }
+                RequestForItemValidated itemValidated = _maybeFactory.GetMaybe<RequestForItem, RequestForItemValidated>(item);
+
+                item.Result = _repository.Get(itemValidated.Name, itemValidated.Revision);
+
                 return Task.CompletedTask;
             }
 

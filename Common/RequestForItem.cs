@@ -9,4 +9,6 @@ namespace Cachy.Common
         public string Name { get; init; }
         public object Result { get; set; }
     }
+
+    public record RequestForItemValidated : RequestForItem { }
 }

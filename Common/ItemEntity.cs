@@ -10,6 +10,10 @@ namespace Cachy.Common
         public byte[] Data { get; init; }
     }
 
+    public record LongTermStorageItemEntinty : ItemEntinty
+    {
+
+    }
     public record StoredItemEntity : ItemEntinty, IStoredEntity
     {
         public int Revision { get; set; }
