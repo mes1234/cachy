@@ -29,25 +29,13 @@ namespace Cachy
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddTransient<MaybeFactory>();
-                    services.AddTransient<Repository<StoredItemEntity>>();
-                    services.AddTransient(typeof(IEvents<>), typeof(Events<>));
+                    CommonServicesRegistration.Register(services);
+                    DispatcherServicesRegistration.Register(services);
+                    StorageServicesRegistration.Register(services);
+                    CommunicationServicesRegistration.Register(services);
+
                     services.AddTransient(typeof(Dictionary<,>));
-                    // containers for handlers
-                    services.AddSingleton<ConcurrentBag<IHandler>>(new ConcurrentBag<IHandler>());
-                    // central message bus for system 
-                    services.AddSingleton<ConcurrentQueue<IEntity>>(new ConcurrentQueue<IEntity>());
-                    services.AddHostedService<Reciever>();
-                    services.AddHostedService<Orchestrator>();
-                    services.AddHostedService<LongTermStorage>();
-                    services.AddHostedService<SnapshotStorage>();
 
-                    services.AddTransient(typeof(Maybe<,>));
-                    services.AddTransient<IConverter<RequestForItem, RequestForItemValidated>, SimpleRequestConverter>();
-                    services.AddTransient<IValidator<RequestForItem, RequestForItemValidated>, LongTermStorageItemRequestForItem>();
-
-                    services.AddTransient<IConverter<ItemEntinty, LongTermStorageItemEntinty>, SimpleConverter>();
-                    services.AddTransient<IValidator<ItemEntinty, LongTermStorageItemEntinty>, LongTermStorageItemEntintyValidator>();
                 });
     }
 }
