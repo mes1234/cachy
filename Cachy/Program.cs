@@ -29,10 +29,15 @@ namespace Cachy
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
+                    services.AddHostedService<Reciever>();
+                    services.AddHostedService<LongTermStorage>();
+                    services.AddHostedService<SnapshotStorage>();
+                    services.AddHostedService<Orchestrator>();
+
+                    CommunicationServicesRegistration.Register(services);
                     CommonServicesRegistration.Register(services);
                     DispatcherServicesRegistration.Register(services);
                     StorageServicesRegistration.Register(services);
-                    CommunicationServicesRegistration.Register(services);
 
                     services.AddTransient(typeof(Dictionary<,>));
 

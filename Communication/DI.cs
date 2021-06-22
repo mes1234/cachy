@@ -7,7 +7,7 @@ namespace Cachy.Communication
     {
         public static void Register(IServiceCollection services)
         {
-            services.AddHostedService<Reciever>();
+
         }
     }
 }

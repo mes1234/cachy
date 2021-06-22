@@ -11,9 +11,6 @@ namespace Cachy.Storage
         {
             services.AddTransient(typeof(IEvents<>), typeof(Events<>));
             services.AddTransient<Repository<StoredItemEntity>>();
-
-            services.AddHostedService<LongTermStorage>();
-            services.AddHostedService<SnapshotStorage>();
         }
     }
 }

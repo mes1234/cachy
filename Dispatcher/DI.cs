@@ -7,7 +7,7 @@ namespace Cachy.Dispatcher
     {
         public static void Register(IServiceCollection services)
         {
-            services.AddHostedService<Orchestrator>();
+
         }
     }
 }
