@@ -1,10 +1,8 @@
 using Cachy.Common;
-namespace Cachy.Common.Validator.Implementation
+namespace Cachy.Storage.LongTerm.Validation.Inbound
 {
-    public class LongTermStorageItemRequestForItem : IValidator<RequestForItem, RequestForItemValidated>
+    public class LTSRequestForItemValidator : IValidator<RequestForItem, LongTermStorageRequestForItem>
     {
-
-
         public bool Validate(RequestForItem obj)
         {
             return (obj.Revision > 0)

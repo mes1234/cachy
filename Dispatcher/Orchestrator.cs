@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using System.Collections;
 using System.Collections.Generic;
 using Cachy.Common;
+using Microsoft.Extensions.Logging;
 
 namespace Cachy.Dispatcher
 {
@@ -26,7 +27,15 @@ namespace Cachy.Dispatcher
         {
             foreach (var handler in _handlers)
             {
-                await handler.Handle(item);
+                try
+                {
+                    await handler.Handle(item);
+                }
+                catch (Exception ex)
+                {
+                    System.Console.WriteLine(ex);
+                }
+
             }
         }
 

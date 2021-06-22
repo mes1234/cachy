@@ -45,7 +45,7 @@ namespace Cachy.Storage
         {
             lock (item)
             {
-                RequestForItemValidated itemValidated = _maybeFactory.GetMaybe<RequestForItem, RequestForItemValidated>(item);
+                LongTermStorageRequestForItem itemValidated = _maybeFactory.GetMaybe<RequestForItem, LongTermStorageRequestForItem>(item);
 
                 item.Result = _repository.Get(itemValidated.Name, itemValidated.Revision);
 

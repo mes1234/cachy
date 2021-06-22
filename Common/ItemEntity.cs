@@ -8,6 +8,7 @@ namespace Cachy.Common
         public string Name { get; init; }
         public int TTL { get; init; }
         public byte[] Data { get; init; }
+        public bool Defined { get; init; }
     }
 
     public record LongTermStorageItemEntinty : ItemEntinty

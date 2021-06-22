@@ -8,7 +8,9 @@ namespace Cachy.Common
         public int Revision { get; init; }
         public string Name { get; init; }
         public object Result { get; set; }
+        public bool Defined { get; init; }
     }
 
-    public record RequestForItemValidated : RequestForItem { }
+    public record LongTermStorageRequestForItem : RequestForItem { }
+    public record SnapshotRequestForItem : RequestForItem { }
 }

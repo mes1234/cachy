@@ -33,15 +33,31 @@ namespace Cachy.Communication.Services
             }
 
             var res = (ItemEntinty)item.Result;
-            return new RetrievedItem
+            if (res.Defined)
             {
-                Item = new Item
+                return new RetrievedItem
                 {
-                    Data = ByteString.CopyFrom(res.Data),
-                    Name = res.Name,
-                    Ttl = new TimeToLive { Seconds = res.TTL }
-                }
-            };
+                    Item = new Item
+                    {
+                        Data = ByteString.CopyFrom(res.Data),
+                        Name = res.Name,
+                        Ttl = new TimeToLive { Seconds = res.TTL }
+                    }
+                };
+            }
+            else
+            {
+                return new RetrievedItem
+                {
+                    Item = new Item
+                    {
+                        Data = ByteString.CopyFrom(new byte[] { 0 }),
+                        Name = "Not Found",
+                        Ttl = new TimeToLive { Seconds = 0 },
+
+                    }
+                };
+            }
         }
     }
 }

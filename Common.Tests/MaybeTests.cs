@@ -1,7 +1,7 @@
 using System;
 using Xunit;
+using Cachy.Common;
 using Cachy.Common.Maybe;
-using Cachy.Common.Validator;
 using Cachy.Common.Converter;
 using NSubstitute;
 using System.Collections.Generic;

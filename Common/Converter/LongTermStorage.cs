@@ -3,7 +3,7 @@ using Cachy.Common;
 namespace Cachy.Common.Converter
 {
 
-    public class SimpleConverter : IConverter<ItemEntinty, LongTermStorageItemEntinty>
+    public class LongTermStorageItemEntintyConverter : IConverter<ItemEntinty, LongTermStorageItemEntinty>
     {
 
         public LongTermStorageItemEntinty Convert(ItemEntinty item)
@@ -13,16 +13,18 @@ namespace Cachy.Common.Converter
                 Data = item.Data,
                 Name = item.Name,
                 Timestamp = item.Timestamp,
-                TTL = item.TTL
+                TTL = item.TTL,
+                Defined = true
+
             };
         }
     }
-    public class SimpleRequestConverter : IConverter<RequestForItem, RequestForItemValidated>
+    public class LongTermStorageRequestConverter : IConverter<RequestForItem, LongTermStorageRequestForItem>
     {
 
-        public RequestForItemValidated Convert(RequestForItem item)
+        public LongTermStorageRequestForItem Convert(RequestForItem item)
         {
-            return new RequestForItemValidated
+            return new LongTermStorageRequestForItem
             {
                 Name = item.Name,
                 Result = item.Result,

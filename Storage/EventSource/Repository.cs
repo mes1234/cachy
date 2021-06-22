@@ -5,7 +5,7 @@ using Cachy.Common;
 namespace Cachy.Storage.EventSource
 {
     public class Repository<T>
-        where T : IStoredEntity
+        where T : IStoredEntity, new()
     {
 
         private readonly Dictionary<string, IEvents<T>> _registry;
@@ -28,10 +28,10 @@ namespace Cachy.Storage.EventSource
         public T Get(string name, int revison)
         {
             if (!_registry.ContainsKey(name))
-                return default(T);
+                return new T();
 
             if (_registry[name].Count < revison)
-                return default(T);
+                return new T();
 
             return _registry[name][revison];
         }

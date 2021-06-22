@@ -1,4 +1,4 @@
-namespace Cachy.Common.Validator
+namespace Cachy.Common
 {
 
     public interface IValidator<T, U>

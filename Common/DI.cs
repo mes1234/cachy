@@ -1,8 +1,6 @@
 using System.Collections.Concurrent;
 using Cachy.Common.Converter;
 using Cachy.Common.Maybe;
-using Cachy.Common.Validator;
-using Cachy.Common.Validator.Implementation;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Cachy.Common
@@ -19,11 +17,10 @@ namespace Cachy.Common
             // central message bus for system 
             services.AddSingleton<ConcurrentQueue<IEntity>>(new ConcurrentQueue<IEntity>());
 
-            services.AddTransient<IConverter<RequestForItem, RequestForItemValidated>, SimpleRequestConverter>();
-            services.AddTransient<IValidator<RequestForItem, RequestForItemValidated>, LongTermStorageItemRequestForItem>();
+            services.AddTransient<IConverter<ItemEntinty, LongTermStorageItemEntinty>, LongTermStorageItemEntintyConverter>();
+            services.AddTransient<IConverter<RequestForItem, SnapshotRequestForItem>, SnapshotRequestForItemConverter>();
+            services.AddTransient<IConverter<RequestForItem, LongTermStorageRequestForItem>, LongTermStorageRequestConverter>();
 
-            services.AddTransient<IConverter<ItemEntinty, LongTermStorageItemEntinty>, SimpleConverter>();
-            services.AddTransient<IValidator<ItemEntinty, LongTermStorageItemEntinty>, LongTermStorageItemEntintyValidator>();
         }
     }
 }

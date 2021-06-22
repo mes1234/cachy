@@ -4,7 +4,7 @@ using Cachy.Common;
 namespace Cachy.Storage.EventSource
 {
     public class Snapshot<T>
-      where T : IEntity
+      where T : IEntity, new()
     {
         private readonly Dictionary<string, T> registry = new();
 
@@ -16,7 +16,7 @@ namespace Cachy.Storage.EventSource
         public T Get(string name)
         {
             if (!registry.ContainsKey(name))
-                return default(T);
+                return new T();
 
             return registry[name];
         }
