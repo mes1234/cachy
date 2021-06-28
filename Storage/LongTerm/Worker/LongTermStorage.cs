@@ -35,7 +35,8 @@ namespace Cachy.Storage
                 Data = itemValidated.Data,
                 Name = itemValidated.Name,
                 Timestamp = itemValidated.Timestamp,
-                TTL = itemValidated.TTL
+                TTL = itemValidated.TTL,
+                Defined = itemValidated.Defined
             };
             _repository.Add(storedItem);
             return Task.CompletedTask;

@@ -18,6 +18,7 @@ namespace Cachy.Common
             services.AddSingleton<ConcurrentQueue<IEntity>>(new ConcurrentQueue<IEntity>());
 
             services.AddTransient<IConverter<ItemEntinty, LongTermStorageItemEntinty>, LongTermStorageItemEntintyConverter>();
+            services.AddTransient<IConverter<ItemEntinty, SnapshotStorageItemEntinty>, SnapshotItemEntintyConverter>();
             services.AddTransient<IConverter<RequestForItem, SnapshotRequestForItem>, SnapshotRequestForItemConverter>();
             services.AddTransient<IConverter<RequestForItem, LongTermStorageRequestForItem>, LongTermStorageRequestConverter>();
 

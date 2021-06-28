@@ -6,7 +6,7 @@ using Cachy.Communication;
 using Cachy.Dispatcher;
 using Cachy.Storage;
 using Cachy.Common;
-
+using Cachy.Storage.Snapshot.Worker;
 
 namespace Cachy
 {

@@ -28,6 +28,7 @@ namespace Cachy.CommunicationIntegration
                 "ping" => () => Pinger.Run(),
                 "add" => () => ItemAdder.Run(),
                 "get" => () => ItemGetter.Run(),
+                "older" => () => ItemGetterOlder.Run(),
                 _ => throw new NotSupportedException("This option is not supported")
             };
         }
@@ -58,6 +59,24 @@ namespace Cachy.CommunicationIntegration
             var res = client.Get(new ItemToRetrieve
             {
                 Name = "yello"
+            });
+            System.Console.WriteLine($"res:{res}");
+            channel.ShutdownAsync().Wait();
+
+        }
+    }
+    public class ItemGetterOlder
+    {
+        public static void Run()
+        {
+            System.Console.WriteLine("I will retrieve item : yello");
+            Channel channel = new Channel("127.0.0.1:5001", ChannelCredentials.Insecure);
+
+            var client = new GetItem.GetItemClient(channel);
+            var res = client.Get(new ItemToRetrieve
+            {
+                Name = "yello",
+                Revision = 1
             });
             System.Console.WriteLine($"res:{res}");
             channel.ShutdownAsync().Wait();

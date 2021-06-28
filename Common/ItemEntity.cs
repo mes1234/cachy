@@ -15,6 +15,10 @@ namespace Cachy.Common
     {
 
     }
+    public record SnapshotStorageItemEntinty : ItemEntinty
+    {
+
+    }
     public record StoredItemEntity : ItemEntinty, IStoredEntity
     {
         public int Revision { get; set; }

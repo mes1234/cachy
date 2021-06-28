@@ -33,7 +33,7 @@ namespace Cachy.Storage.EventSource
             if (_registry[name].Count < revison)
                 return new T();
 
-            return _registry[name][revison];
+            return _registry[name][revison - 1];
         }
     }
 }
