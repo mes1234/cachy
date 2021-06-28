@@ -30,6 +30,8 @@ namespace Cachy.Storage
         {
             LongTermStorageItemEntinty itemValidated = _maybeFactory.GetMaybe<ItemEntinty, LongTermStorageItemEntinty>(item);
 
+            if (itemValidated == null) return Task.CompletedTask;
+
             var storedItem = new StoredItemEntity
             {
                 Data = itemValidated.Data,
@@ -47,6 +49,8 @@ namespace Cachy.Storage
             lock (item)
             {
                 LongTermStorageRequestForItem itemValidated = _maybeFactory.GetMaybe<RequestForItem, LongTermStorageRequestForItem>(item);
+
+                if (itemValidated == null) return Task.CompletedTask;
 
                 item.Result = _repository.Get(itemValidated.Name, itemValidated.Revision);
 

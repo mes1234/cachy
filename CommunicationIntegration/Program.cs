@@ -25,10 +25,12 @@ namespace Cachy.CommunicationIntegration
         {
             return config.Mode switch
             {
-                "ping" => () => Pinger.Run(),
-                "add" => () => ItemAdder.Run(),
-                "get" => () => ItemGetter.Run(),
-                "older" => () => ItemGetterOlder.Run(),
+                "ping" => () => Pinger.Run(), // ping service
+                "add" => () => ItemAdder.Run(), //add single item to cachy
+                "get" => () => ItemGetter.Run(), //get last revision
+                "getwrong" => () => ItemGetterNotFound.Run(), //get item which doesn't exist
+                "older" => () => ItemGetterOlder.Run(), //get older revision
+                "olderwrong" => () => ItemGetterOlder.Run(), //get older revison which doesn't exist
                 _ => throw new NotSupportedException("This option is not supported")
             };
         }
@@ -65,6 +67,23 @@ namespace Cachy.CommunicationIntegration
 
         }
     }
+    public class ItemGetterNotFound
+    {
+        public static void Run()
+        {
+            System.Console.WriteLine("I will retrieve item : yello");
+            Channel channel = new Channel("127.0.0.1:5001", ChannelCredentials.Insecure);
+
+            var client = new GetItem.GetItemClient(channel);
+            var res = client.Get(new ItemToRetrieve
+            {
+                Name = "yello1"
+            });
+            System.Console.WriteLine($"res:{res}");
+            channel.ShutdownAsync().Wait();
+
+        }
+    }
     public class ItemGetterOlder
     {
         public static void Run()
@@ -75,7 +94,7 @@ namespace Cachy.CommunicationIntegration
             var client = new GetItem.GetItemClient(channel);
             var res = client.Get(new ItemToRetrieve
             {
-                Name = "yello",
+                Name = "yello1",
                 Revision = 1
             });
             System.Console.WriteLine($"res:{res}");

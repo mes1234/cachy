@@ -25,7 +25,7 @@ namespace Cachy.Storage.Snapshot.Worker
         {
 
             SnapshotStorageItemEntinty itemValidated = _maybeFactory.GetMaybe<ItemEntinty, SnapshotStorageItemEntinty>(item);
-
+            if (itemValidated == null) return Task.CompletedTask;
             var storedItem = new StoredItemEntity
             {
                 Name = itemValidated.Name,
@@ -42,7 +42,7 @@ namespace Cachy.Storage.Snapshot.Worker
         private Task handle(RequestForItem item)
         {
             SnapshotRequestForItem itemValidated = _maybeFactory.GetMaybe<RequestForItem, SnapshotRequestForItem>(item);
-
+            if (itemValidated == null) return Task.CompletedTask;
             lock (item)
             {
                 item.Result = _snapshot.Get(itemValidated.Name);
