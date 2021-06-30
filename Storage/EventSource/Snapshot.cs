@@ -20,5 +20,13 @@ namespace Cachy.Storage.EventSource
 
             return registry[name];
         }
+
+        public void Remove(string name)
+        {
+            if (!registry.ContainsKey(name))
+                return;
+            registry.Remove(name);
+
+        }
     }
 }

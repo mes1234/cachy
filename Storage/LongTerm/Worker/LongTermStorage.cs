@@ -40,17 +40,22 @@ namespace Cachy.Storage
                 TTL = itemValidated.TTL,
                 Defined = itemValidated.Defined
             };
-            _repository.Add(storedItem);
+            if (storedItem.Data.Length == 0)
+                _repository.Remove(storedItem.Name);
+            else
+                _repository.Add(storedItem);
             return Task.CompletedTask;
         }
 
         private Task handle(RequestForItem item)
         {
+            LongTermStorageRequestForItem itemValidated = _maybeFactory.GetMaybe<RequestForItem, LongTermStorageRequestForItem>(item);
+
+            if (itemValidated == null) return Task.CompletedTask;
+
             lock (item)
             {
-                LongTermStorageRequestForItem itemValidated = _maybeFactory.GetMaybe<RequestForItem, LongTermStorageRequestForItem>(item);
-
-                if (itemValidated == null) return Task.CompletedTask;
+                if (item.Result != null) return Task.CompletedTask;
 
                 item.Result = _repository.Get(itemValidated.Name, itemValidated.Revision);
 

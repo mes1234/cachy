@@ -5,6 +5,7 @@ using Cachy.Events;
 using Cachy.Common;
 using System.Collections.Concurrent;
 using System.Threading;
+using System;
 
 namespace Cachy.Communication.Services
 {
@@ -16,23 +17,24 @@ namespace Cachy.Communication.Services
             _queue = Queue;
         }
 
-        public override async Task<RetrievedItem> Get(ItemToRetrieve request, ServerCallContext context)
+        private RetrievedItem TimeOutResponse()
         {
-
-            var item = new RequestForItem
+            return new RetrievedItem
             {
-                Name = request.Name,
-                Revision = request.Revision,
+                Item = new Item
+                {
+                    Data = ByteString.CopyFrom(new byte[] { 0 }),
+                    Name = "Timeout",
+                    Ttl = new TimeToLive { Seconds = 0 },
+
+                }
             };
+        }
 
-            _queue.Enqueue(item);
+        private RetrievedItem HandleResponse(object result)
+        {
+            var res = (ItemEntinty)result;
 
-            while (item.Result == null)
-            {
-                await Task.Delay(0);
-            }
-
-            var res = (ItemEntinty)item.Result;
             if (res.Defined)
             {
                 return new RetrievedItem
@@ -58,6 +60,43 @@ namespace Cachy.Communication.Services
                     }
                 };
             }
+        }
+
+        public override async Task<RetrievedItem> Get(ItemToRetrieve request, ServerCallContext context)
+        {
+
+            // Prepare request for new item
+            var item = new RequestForItem
+            {
+                Name = request.Name,
+                Revision = request.Revision,
+            };
+
+            // Define start time and maximum allowed time for processing
+            var start = DateTime.Now;
+            var timeout = TimeSpan.FromSeconds(2);
+
+            // Start waiting loop 
+            item.Waiter = Task.Run(async () =>
+             {
+                 while (item.Result == null && ((DateTime.Now - start) < timeout))
+                 {
+                     await Task.Delay(0);
+                 }
+             });
+
+            // Insert request to communication bus
+            _queue.Enqueue(item);
+
+            // Wait for response
+            await item.Waiter;
+
+            // Return response
+            if (item.Result == null)
+                return TimeOutResponse();
+            else
+                return HandleResponse(item.Result);
+
         }
     }
 }

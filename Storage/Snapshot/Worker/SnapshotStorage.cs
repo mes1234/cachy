@@ -35,7 +35,10 @@ namespace Cachy.Storage.Snapshot.Worker
                 TTL = itemValidated.TTL
             };
 
-            _snapshot.Add(storedItem);
+            if (storedItem.Data.Length == 0)
+                _snapshot.Remove(storedItem.Name);
+            else
+                _snapshot.Add(storedItem);
             return Task.CompletedTask;
         }
 
@@ -45,6 +48,7 @@ namespace Cachy.Storage.Snapshot.Worker
             if (itemValidated == null) return Task.CompletedTask;
             lock (item)
             {
+                if (item.Result != null) return Task.CompletedTask;
                 item.Result = _snapshot.Get(itemValidated.Name);
                 return Task.CompletedTask;
             }
