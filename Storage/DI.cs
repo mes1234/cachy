@@ -11,7 +11,6 @@ namespace Cachy.Storage
     {
         public static void Register(IServiceCollection services)
         {
-            services.AddTransient(typeof(IEvents<>), typeof(Events<>));
             services.AddTransient<Repository<StoredItemEntity>>();
 
             services.AddTransient<IValidator<ItemEntinty, LongTermStorageItemEntinty>, LTSItemEntintyValidator>();

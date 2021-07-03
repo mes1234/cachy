@@ -8,9 +8,9 @@ namespace Cachy.Storage.EventSource
         where T : IStoredEntity, new()
     {
 
-        private readonly Dictionary<string, IEvents<T>> _registry;
+        private readonly Dictionary<string, Events<T>> _registry;
 
-        public Repository(Dictionary<string, IEvents<T>> Registry)
+        public Repository(Dictionary<string, Events<T>> Registry)
         {
             _registry = Registry;
         }

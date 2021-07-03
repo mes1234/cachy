@@ -4,11 +4,8 @@ using Cachy.Common;
 namespace Cachy.Storage.EventSource
 {
 
-    public interface IEvents<T> : IList<T>
-    where T : IStoredEntity
-    { }
 
-    public class Events<T> : List<T>, IEvents<T>
+    public class Events<T> : List<T>
     where T : IStoredEntity
     {
         new public void Add(T item)
