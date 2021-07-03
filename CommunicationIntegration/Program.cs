@@ -31,6 +31,7 @@ namespace Cachy.CommunicationIntegration
                 "getwrong" => () => ItemGetterNotFound.Run(), //get item which doesn't exist
                 "older" => () => ItemGetterOlder.Run(), //get older revision
                 "olderwrong" => () => ItemGetterOlder.Run(), //get older revison which doesn't exist
+                "remove" => () => ItemRemove.Run(), //remove item
                 _ => throw new NotSupportedException("This option is not supported")
             };
         }
@@ -100,6 +101,24 @@ namespace Cachy.CommunicationIntegration
             System.Console.WriteLine($"res:{res}");
             channel.ShutdownAsync().Wait();
 
+        }
+    }
+
+    public class ItemRemove
+    {
+        public static void Run()
+        {
+            System.Console.WriteLine("yello");
+            Channel channel = new Channel("127.0.0.1:5001", ChannelCredentials.Insecure);
+
+            var client = new InsertItem.InsertItemClient(channel);
+            var pong = client.InsertItem(new Item
+            {
+                Name = "yello",
+                Ttl = new TimeToLive { Seconds = 100 }
+            });
+            System.Console.WriteLine($"pong:{pong}");
+            channel.ShutdownAsync().Wait();
         }
     }
 

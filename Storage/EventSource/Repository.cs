@@ -4,18 +4,19 @@ using Cachy.Common;
 
 namespace Cachy.Storage.EventSource
 {
-    public class Repository<T>
+    public interface IRepository<T>
+        where T : IStoredEntity, new()
+    {
+        public void Add(T item);
+        public void Remove(string name);
+        public T Get(string name, int revison);
+    }
+
+    public class Repository<T> : IRepository<T>
         where T : IStoredEntity, new()
     {
 
-        private readonly Dictionary<string, Events<T>> _registry;
-
-        public Repository(Dictionary<string, Events<T>> Registry)
-        {
-            _registry = Registry;
-        }
-
-
+        private readonly Dictionary<string, Events<T>> _registry = new();
 
         public void Add(T item)
         {

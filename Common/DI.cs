@@ -10,8 +10,6 @@ namespace Cachy.Common
         public static void Register(IServiceCollection services)
         {
             services.AddTransient<MaybeFactory>();
-            services.AddTransient(typeof(Maybe<,>));
-
             // containers for handlers
             services.AddSingleton<ConcurrentBag<IHandler>>(new ConcurrentBag<IHandler>());
             // central message bus for system 

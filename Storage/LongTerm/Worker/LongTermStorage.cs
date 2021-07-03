@@ -12,12 +12,12 @@ namespace Cachy.Storage
     public class LongTermStorage : BackgroundService, IHandler
     {
 
-        private readonly Repository<StoredItemEntity> _repository;
+        private readonly IRepository<StoredItemEntity> _repository;
         private readonly MaybeFactory _maybeFactory;
 
         public LongTermStorage(
             ConcurrentBag<IHandler> handlers,
-             Repository<StoredItemEntity> repository,
+             IRepository<StoredItemEntity> repository,
              MaybeFactory maybeFactory
              )
         {
@@ -38,7 +38,8 @@ namespace Cachy.Storage
                 Name = itemValidated.Name,
                 Timestamp = itemValidated.Timestamp,
                 TTL = itemValidated.TTL,
-                Defined = itemValidated.Defined
+                Defined = itemValidated.Defined,
+                Active = true
             };
             if (storedItem.Data.Length == 0)
                 _repository.Remove(storedItem.Name);

@@ -32,8 +32,6 @@ namespace Cachy
                     DispatcherServicesRegistration.Register(services);
                     StorageServicesRegistration.Register(services);
 
-                    services.AddTransient(typeof(Dictionary<,>));
-
                 });
     }
 }
