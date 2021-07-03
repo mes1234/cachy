@@ -54,7 +54,7 @@ namespace Common.Tests
             Assert.Equal(data, input);
         }
         [Fact]
-        public void MaybeTest_ValidationFalseThrowsException()
+        public void MaybeTest_ValidationFalseReturnsNull()
         {
             var input = "dummy";
             validator.Validate(Arg.Any<string>()).Returns(false);
@@ -63,10 +63,10 @@ namespace Common.Tests
 
             var maybe = new Maybe<string, string>(EnumarableThis(validator), converter);
             maybe.Value = input;
-            Assert.Throws<NotValidException>(() =>
-            {
-                string data = maybe;
-            });
+
+            string data = maybe;
+            Assert.Null(data);
+
 
         }
     }

@@ -39,7 +39,7 @@ namespace Cachy.Common.Maybe
         public static implicit operator bool(Maybe<T, U> m) => m._valid;
         public static implicit operator U(Maybe<T, U> m) => (m._valid == true)
               ? m._converted
-              : default(U);//throw new NotValidException($"Validation for entity {m.Value} failed");
+              : default(U);
     }
 
 
