@@ -29,7 +29,9 @@ namespace Cachy.Storage.EventSource
         {
             if (!_registry.ContainsKey(name))
                 return;
-            // TODO time for ES
+            var lastItem = _registry[name][^1];
+            var deletedItem = lastItem.CopyAndDeactivate();
+            Add((T)deletedItem);
 
         }
 

@@ -22,5 +22,11 @@ namespace Cachy.Common
     public record StoredItemEntity : ItemEntinty, IStoredEntity
     {
         public int Revision { get; set; }
+        public bool Active { get; init; }
+
+        public IStoredEntity CopyAndDeactivate()
+        {
+            return this with { Active = false };
+        }
     }
 }
