@@ -11,6 +11,12 @@ namespace Cachy.Common
         public bool Defined { get; init; }
     }
 
+    public record ItemToRemoveEntity : IEntity
+    {
+        public string Name { get; init; }
+        public bool Defined { get; init; }
+    }
+
     public record LongTermStorageItemEntinty : ItemEntinty
     {
 

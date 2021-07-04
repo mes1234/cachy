@@ -34,11 +34,7 @@ namespace Cachy.Storage.Snapshot.Worker
                 Timestamp = itemValidated.Timestamp,
                 TTL = itemValidated.TTL
             };
-
-            if (storedItem.Data.Length == 0)
-                _snapshot.Remove(storedItem.Name);
-            else
-                _snapshot.Add(storedItem);
+            _snapshot.Add(storedItem);
             return Task.CompletedTask;
         }
 
@@ -54,6 +50,12 @@ namespace Cachy.Storage.Snapshot.Worker
             }
         }
 
+        private Task handle(ItemToRemoveEntity item)
+        {
+            _snapshot.Remove(item.Name);
+            return Task.CompletedTask;
+        }
+
         public async Task Handle(IEntity item)
         {
             switch (item)
@@ -63,6 +65,9 @@ namespace Cachy.Storage.Snapshot.Worker
                     break;
                 case RequestForItem requestForItem:
                     await handle(requestForItem);
+                    break;
+                case ItemToRemoveEntity itemToRemoveEntity:
+                    await handle(itemToRemoveEntity);
                     break;
                 default:
                     throw new NotSupportedException("Not supported item in queue");

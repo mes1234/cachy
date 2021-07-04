@@ -41,10 +41,8 @@ namespace Cachy.Storage
                 Defined = itemValidated.Defined,
                 Active = true
             };
-            if (storedItem.Data.Length == 0)
-                _repository.Remove(storedItem.Name);
-            else
-                _repository.Add(storedItem);
+
+            _repository.Add(storedItem);
             return Task.CompletedTask;
         }
 
@@ -63,7 +61,12 @@ namespace Cachy.Storage
                 return Task.CompletedTask;
             }
 
+        }
 
+        private Task handle(ItemToRemoveEntity item)
+        {
+            _repository.Remove(item.Name);
+            return Task.CompletedTask;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -83,6 +86,9 @@ namespace Cachy.Storage
                     break;
                 case RequestForItem requestForItem:
                     await handle(requestForItem);
+                    break;
+                case ItemToRemoveEntity itemToRemoveEntity:
+                    await handle(itemToRemoveEntity);
                     break;
                 default:
                     throw new NotSupportedException("Not supported item in queue");

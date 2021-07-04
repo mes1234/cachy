@@ -111,11 +111,10 @@ namespace Cachy.CommunicationIntegration
             System.Console.WriteLine("yello");
             Channel channel = new Channel("127.0.0.1:5001", ChannelCredentials.Insecure);
 
-            var client = new InsertItem.InsertItemClient(channel);
-            var pong = client.InsertItem(new Item
+            var client = new RemoveItem.RemoveItemClient(channel);
+            var pong = client.Remove(new ItemToRemove
             {
-                Name = "yello",
-                Ttl = new TimeToLive { Seconds = 100 }
+                Name = "yello"
             });
             System.Console.WriteLine($"pong:{pong}");
             channel.ShutdownAsync().Wait();

@@ -1,0 +1,14 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+
+option csharp_namespace = "Cachy.Events";
+
+message ItemToRemove {
+  string name = 1;
+}
+
+
+service RemoveItem {
+  // Retrieve requested item
+  rpc Remove(ItemToRemove) returns (google.protobuf.Empty);
+}

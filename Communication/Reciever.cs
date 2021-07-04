@@ -32,7 +32,8 @@ namespace Cachy.Communication
                 Services = {
                     PingPong.BindService(new PingPongService()),
                     InsertItem.BindService(new  InsertItemService(_queue)),
-                    GetItem.BindService(new GetItemService(_queue))
+                    GetItem.BindService(new GetItemService(_queue)),
+                    RemoveItem.BindService(new RemoveItemService(_queue))
                  },
                 Ports = { new ServerPort(_host, _port, ServerCredentials.Insecure) }
             };
