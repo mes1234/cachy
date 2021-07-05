@@ -52,7 +52,8 @@ namespace Cachy.Storage.Snapshot.Worker
 
         private Task handle(ItemToRemoveEntity item)
         {
-            _snapshot.Remove(item.Name);
+            ValidatedItemToRemoveEntity itemValidated = _maybeFactory.GetMaybe<ItemToRemoveEntity, ValidatedItemToRemoveEntity>(item);
+            _snapshot.Remove(itemValidated.Name);
             return Task.CompletedTask;
         }
 

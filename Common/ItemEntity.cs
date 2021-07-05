@@ -17,14 +17,9 @@ namespace Cachy.Common
         public bool Defined { get; init; }
     }
 
-    public record LongTermStorageItemEntinty : ItemEntinty
-    {
-
-    }
-    public record SnapshotStorageItemEntinty : ItemEntinty
-    {
-
-    }
+    public record ValidatedItemToRemoveEntity : ItemToRemoveEntity { }
+    public record LongTermStorageItemEntinty : ItemEntinty { }
+    public record SnapshotStorageItemEntinty : ItemEntinty { }
     public record StoredItemEntity : ItemEntinty, IStoredEntity
     {
         public int Revision { get; set; }

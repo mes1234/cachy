@@ -65,7 +65,8 @@ namespace Cachy.Storage
 
         private Task handle(ItemToRemoveEntity item)
         {
-            _repository.Remove(item.Name);
+            ValidatedItemToRemoveEntity itemValidated = _maybeFactory.GetMaybe<ItemToRemoveEntity, ValidatedItemToRemoveEntity>(item);
+            _repository.Remove(itemValidated.Name);
             return Task.CompletedTask;
         }
 
