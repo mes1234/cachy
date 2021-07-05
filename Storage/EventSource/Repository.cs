@@ -1,10 +1,11 @@
 
+using System.Collections;
 using System.Collections.Generic;
 using Cachy.Common;
 
 namespace Cachy.Storage.EventSource
 {
-    public interface IRepository<T>
+    public interface IRepository<T> : IEnumerable<T>
         where T : IStoredEntity, new()
     {
         public void Add(T item);
@@ -46,5 +47,16 @@ namespace Cachy.Storage.EventSource
 
             return _registry[name][revison - 1];
         }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            foreach (var item in _registry)
+            {
+                yield return item.Value[item.Value.Count - 1];
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => _registry.GetEnumerator();
+
     }
 }

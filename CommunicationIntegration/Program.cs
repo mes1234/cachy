@@ -132,7 +132,7 @@ namespace Cachy.CommunicationIntegration
             var pong = client.InsertItem(new Item
             {
                 Name = "yello",
-                Ttl = new TimeToLive { Seconds = 100 },
+                Ttl = new TimeToLive { Seconds = 10 },
                 Data = ByteString.CopyFrom(Encoding.ASCII.GetBytes("hello"))
             });
             System.Console.WriteLine($"pong:{pong}");

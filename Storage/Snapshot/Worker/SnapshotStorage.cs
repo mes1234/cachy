@@ -79,6 +79,21 @@ namespace Cachy.Storage.Snapshot.Worker
         {
             while (stoppingToken.IsCancellationRequested != true)
             {
+                var counter = 0;
+                foreach (var item in _snapshot)
+                {
+                    counter++;
+
+                    if ((DateTime.Now - item.Timestamp).Seconds > item.TTL)
+                    {
+                        _snapshot.Remove(item.Name);
+                    }
+                    if (counter == 10)
+                    {
+                        counter = 0;
+                        await Task.Delay(100);
+                    }
+                }
                 await Task.Delay(100);
             }
         }

@@ -41,7 +41,7 @@ namespace Cachy.Common.Converter
             {
                 Defined = item.Defined,
                 Name = item.Name
-            }
+            };
         }
     }
 }

@@ -74,6 +74,22 @@ namespace Cachy.Storage
         {
             while (stoppingToken.IsCancellationRequested != true)
             {
+                var counter = 0;
+                foreach (var item in _repository)
+                {
+                    counter++;
+
+                    if ((DateTime.Now - item.Timestamp).Seconds > item.TTL &&
+                    item.Active)
+                    {
+                        _repository.Remove(item.Name);
+                    }
+                    if (counter == 10)
+                    {
+                        counter = 0;
+                        await Task.Delay(100);
+                    }
+                }
                 await Task.Delay(100);
             }
         }

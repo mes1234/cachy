@@ -15,6 +15,7 @@ namespace Cachy.Storage.EventSource
             else
                 item.Revision = this.Count + 1;
             base.Add(item);
+
         }
     }
 }
