@@ -4,6 +4,9 @@ using Cachy.Events;
 using System.Text;
 using Google.Protobuf;
 using PowerArgs;
+using CachyClient;
+using System.Threading.Tasks;
+using System.Linq;
 
 namespace Cachy.CommunicationIntegration
 {
@@ -26,7 +29,7 @@ namespace Cachy.CommunicationIntegration
             return config.Mode switch
             {
                 "ping" => () => Pinger.Run(), // ping service
-                "add" => () => ItemAdder.Run(), //add single item to cachy
+                "add" => async () => await ItemAdder.Run(), //add single item to cachy
                 "get" => () => ItemGetter.Run(), //get last revision
                 "getwrong" => () => ItemGetterNotFound.Run(), //get item which doesn't exist
                 "older" => () => ItemGetterOlder.Run(), //get older revision
@@ -123,20 +126,16 @@ namespace Cachy.CommunicationIntegration
 
     public class ItemAdder
     {
-        public static void Run()
+        public async static Task Run()
         {
-            System.Console.WriteLine("yello");
-            Channel channel = new Channel("127.0.0.1:5001", ChannelCredentials.Insecure);
-
-            var client = new InsertItem.InsertItemClient(channel);
-            var pong = client.InsertItem(new Item
+            System.Console.WriteLine("Trying to add stuff");
+            ICachy cachy = new CachyClient.Cachy();
+            foreach (var item in Enumerable.Range(1, 60))
             {
-                Name = "yello",
-                Ttl = new TimeToLive { Seconds = 10 },
-                Data = ByteString.CopyFrom(Encoding.ASCII.GetBytes("hello"))
-            });
-            System.Console.WriteLine($"pong:{pong}");
-            channel.ShutdownAsync().Wait();
+                await cachy.Add($"test_{item.ToString()}", Encoding.UTF8.GetBytes($"yello_{item.ToString()}"));
+
+            }
+            System.Console.WriteLine($"Managed to add item ");
         }
     }
 }

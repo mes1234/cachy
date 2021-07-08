@@ -81,7 +81,7 @@ namespace Cachy.Communication.Services
              {
                  while (item.Result == null && ((DateTime.Now - start) < timeout))
                  {
-                     await Task.Delay(0);
+                     await Task.Delay(10);
                  }
              });
 

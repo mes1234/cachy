@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Tests", "Common.Test
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Validation", "Validation\Validation.csproj", "{7EF759BD-C3B0-4FE7-A814-FCD154D540CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CachyClient", "CachyClient\CachyClient.csproj", "{3E8A8692-1205-40E1-A7B8-493370192620}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -128,5 +130,17 @@ Global
 		{7EF759BD-C3B0-4FE7-A814-FCD154D540CD}.Release|x64.Build.0 = Release|Any CPU
 		{7EF759BD-C3B0-4FE7-A814-FCD154D540CD}.Release|x86.ActiveCfg = Release|Any CPU
 		{7EF759BD-C3B0-4FE7-A814-FCD154D540CD}.Release|x86.Build.0 = Release|Any CPU
+		{3E8A8692-1205-40E1-A7B8-493370192620}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E8A8692-1205-40E1-A7B8-493370192620}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E8A8692-1205-40E1-A7B8-493370192620}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3E8A8692-1205-40E1-A7B8-493370192620}.Debug|x64.Build.0 = Debug|Any CPU
+		{3E8A8692-1205-40E1-A7B8-493370192620}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3E8A8692-1205-40E1-A7B8-493370192620}.Debug|x86.Build.0 = Debug|Any CPU
+		{3E8A8692-1205-40E1-A7B8-493370192620}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E8A8692-1205-40E1-A7B8-493370192620}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E8A8692-1205-40E1-A7B8-493370192620}.Release|x64.ActiveCfg = Release|Any CPU
+		{3E8A8692-1205-40E1-A7B8-493370192620}.Release|x64.Build.0 = Release|Any CPU
+		{3E8A8692-1205-40E1-A7B8-493370192620}.Release|x86.ActiveCfg = Release|Any CPU
+		{3E8A8692-1205-40E1-A7B8-493370192620}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
