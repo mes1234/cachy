@@ -50,7 +50,7 @@ namespace Cachy.Dispatcher
                 }
                 else
                 {
-                    Thread.Sleep(0);
+                    await Task.Delay(10);
                 }
             }
         }

@@ -77,34 +77,20 @@ namespace Cachy.Storage.Snapshot.Worker
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            try
+            while (stoppingToken.IsCancellationRequested != true)
             {
-                while (stoppingToken.IsCancellationRequested != true)
+                try
                 {
-                    System.Console.WriteLine("bum");
-                    var counter = 0;
-                    foreach (var item in _snapshot)
-                    {
-                        counter++;
 
-                        if ((DateTime.Now - item.Timestamp).Seconds > item.TTL)
-                        {
-                            _snapshot.Remove(item.Name);
-                        }
-                        if (counter == 10)
-                        {
-                            counter = 0;
-                            await Task.Delay(100);
-                        }
-                    }
+                    _snapshot.CheckTtl();
                     await Task.Delay(100);
+
+                }
+                catch (Exception ex)
+                {
+                    System.Console.WriteLine(ex);
                 }
             }
-            catch (Exception ex)
-            {
-                System.Console.WriteLine(ex);
-            }
-
 
         }
     }

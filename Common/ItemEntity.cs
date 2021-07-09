@@ -9,12 +9,16 @@ namespace Cachy.Common
         public int TTL { get; init; }
         public byte[] Data { get; init; }
         public bool Defined { get; init; }
+        public bool Active { get; init; }
     }
 
     public record ItemToRemoveEntity : IEntity
     {
         public string Name { get; init; }
         public bool Defined { get; init; }
+        public bool Active { get; init; }
+        public DateTime Timestamp { get; init; }
+        public int TTL { get; init; }
     }
 
     public record ValidatedItemToRemoveEntity : ItemToRemoveEntity { }
@@ -23,7 +27,6 @@ namespace Cachy.Common
     public record StoredItemEntity : ItemEntinty, IStoredEntity
     {
         public int Revision { get; set; }
-        public bool Active { get; init; }
 
         public IStoredEntity CopyAndDeactivate()
         {

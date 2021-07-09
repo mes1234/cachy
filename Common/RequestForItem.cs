@@ -10,6 +10,9 @@ namespace Cachy.Common
         public object Result { get; set; }
         public Task Waiter { get; set; }
         public bool Defined { get; init; }
+        public bool Active { get; init; }
+        public DateTime Timestamp { get; init; }
+        public int TTL { get; init; }
     }
 
     public record LongTermStorageRequestForItem : RequestForItem { }

@@ -1,16 +1,19 @@
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cachy.Common;
+using System.Linq;
 
 namespace Cachy.Storage.EventSource
 {
-    public interface IRepository<T> : IEnumerable<T>
+    public interface IRepository<T>
         where T : IStoredEntity, new()
     {
         public void Add(T item);
         public void Remove(string name);
         public T Get(string name, int revison);
+        public void CheckTtl();
     }
 
     public class Repository<T> : IRepository<T>
@@ -21,18 +24,25 @@ namespace Cachy.Storage.EventSource
 
         public void Add(T item)
         {
-            if (_registry.ContainsKey(item.Name))
-                _registry[item.Name].Add(item);
-            else
-                _registry[item.Name] = new Events<T> { item };
+            lock (_registry)
+            {
+                if (_registry.ContainsKey(item.Name))
+                    _registry[item.Name].Add(item);
+                else
+                    _registry[item.Name] = new Events<T> { item };
+            }
         }
 
         public void Remove(string name)
         {
             if (!_registry.ContainsKey(name))
                 return;
-            var lastItem = _registry[name][^1];
-            var deletedItem = lastItem.CopyAndDeactivate();
+            IStoredEntity deletedItem;
+            lock (_registry)
+            {
+                var lastItem = _registry[name][^1];
+                deletedItem = lastItem.CopyAndDeactivate();
+            }
             Add((T)deletedItem);
 
         }
@@ -48,15 +58,26 @@ namespace Cachy.Storage.EventSource
             return _registry[name][revison - 1];
         }
 
-        public IEnumerator<T> GetEnumerator()
+
+        public void CheckTtl()
         {
-            foreach (var item in _registry)
+            if (_registry.Count == 0) return;
+
+            var random = new Random();
+
+            Events<T> itemCollection;
+            // get all items for random Key
+            lock (_registry)
             {
-                yield return item.Value[item.Value.Count - 1];
+                itemCollection = _registry.ElementAt(random.Next(0, _registry.Count)).Value;
+            }
+            // get last revision 
+            var item = itemCollection[itemCollection.Count - 1];
+            if ((DateTime.Now - item.Timestamp).TotalSeconds > item.TTL &&
+                        item.Active)
+            {
+                Remove(item.Name);
             }
         }
-
-        IEnumerator IEnumerable.GetEnumerator() => _registry.GetEnumerator();
-
     }
 }

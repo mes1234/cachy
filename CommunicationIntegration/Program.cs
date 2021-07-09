@@ -130,10 +130,11 @@ namespace Cachy.CommunicationIntegration
         {
             System.Console.WriteLine("Trying to add stuff");
             ICachy cachy = new CachyClient.Cachy();
-            foreach (var item in Enumerable.Range(1, 60))
+            foreach (var item in Enumerable.Range(1, 6000))
             {
-                await cachy.Add($"test_{item.ToString()}", Encoding.UTF8.GetBytes($"yello_{item.ToString()}"));
-
+                await cachy.Add($"test_{item.ToString()}", Encoding.UTF8.GetBytes($"yello_{item.ToString()}"), 60);
+                System.Console.WriteLine($"Managed to add item still to do {6000 - item} ");
+                // await Task.Delay(1);
             }
             System.Console.WriteLine($"Managed to add item ");
         }

@@ -1,40 +1,63 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Cachy.Common;
 
 namespace Cachy.Storage.EventSource
 {
-    public class Snapshot<T> : IEnumerable<T>
+    public class Snapshot<T>
       where T : IEntity, new()
     {
-        private readonly Dictionary<string, T> registry = new();
+        private readonly Dictionary<string, T> _registry = new();
 
         public void Add(T item)
         {
-            registry[item.Name] = item;
+            lock (_registry)
+            {
+                _registry[item.Name] = item;
+            }
+        }
+
+        public void CheckTtl()
+        {
+            if (_registry.Count == 0) return;
+            var random = new Random();
+
+            T item;
+            lock (_registry)
+            {
+                // get  item for random Key
+                item = _registry.ElementAt(random.Next(0, _registry.Count)).Value;
+
+            }
+
+            if ((DateTime.Now - item.Timestamp).TotalSeconds > item.TTL && item.Active) // TODO why this is setting Active to false?
+            {
+                Remove(item.Name);
+            }
         }
 
         public T Get(string name)
         {
-            if (!registry.ContainsKey(name))
+            if (!_registry.ContainsKey(name))
                 return new T();
 
-            return registry[name];
+            return _registry[name];
         }
 
-        public IEnumerator<T> GetEnumerator()
-        {
-            return this.registry.Values.GetEnumerator();
-        }
 
         public void Remove(string name)
         {
-            if (!registry.ContainsKey(name))
+
+            if (!_registry.ContainsKey(name))
                 return;
-            registry.Remove(name);
+            lock (_registry)
+            {
+                _registry.Remove(name);
+            }
 
         }
 
-        IEnumerator IEnumerable.GetEnumerator() => registry.GetEnumerator();
     }
 }

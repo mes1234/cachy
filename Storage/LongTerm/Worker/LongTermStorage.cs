@@ -72,35 +72,19 @@ namespace Cachy.Storage
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            try
+            while (stoppingToken.IsCancellationRequested != true)
             {
-
-
-                while (stoppingToken.IsCancellationRequested != true)
+                try
                 {
-                    // TODO LOCK REPOSITORY WHEN CHECKING ITEMS !!!!!
-                    var counter = 0;
-                    foreach (var item in _repository)
-                    {
-                        counter++;
 
-                        if ((DateTime.Now - item.Timestamp).Seconds > item.TTL &&
-                        item.Active)
-                        {
-                            _repository.Remove(item.Name);
-                        }
-                        if (counter == 10)
-                        {
-                            counter = 0;
-                            await Task.Delay(100);
-                        }
-                    }
+                    _repository.CheckTtl();
                     await Task.Delay(100);
+
                 }
-            }
-            catch (Exception ex)
-            {
-                System.Console.WriteLine(ex);
+                catch (Exception ex)
+                {
+                    System.Console.WriteLine(ex);
+                }
             }
         }
 
