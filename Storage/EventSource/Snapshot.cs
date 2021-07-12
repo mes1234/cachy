@@ -32,7 +32,7 @@ namespace Cachy.Storage.EventSource
 
             }
 
-            if ((DateTime.Now - item.Timestamp).TotalSeconds > item.TTL && item.Active) // TODO why this is setting Active to false?
+            if ((DateTime.Now - item.Timestamp).TotalSeconds > item.TTL) // TODO why this is setting Active to false?
             {
                 Remove(item.Name);
             }

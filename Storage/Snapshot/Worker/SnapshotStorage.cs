@@ -83,7 +83,7 @@ namespace Cachy.Storage.Snapshot.Worker
                 {
 
                     _snapshot.CheckTtl();
-                    await Task.Delay(100);
+                    await Task.Delay(10);
 
                 }
                 catch (Exception ex)

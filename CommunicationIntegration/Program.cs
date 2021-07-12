@@ -7,6 +7,7 @@ using PowerArgs;
 using CachyClient;
 using System.Threading.Tasks;
 using System.Linq;
+using CachyClient.Common;
 
 namespace Cachy.CommunicationIntegration
 {
@@ -30,7 +31,7 @@ namespace Cachy.CommunicationIntegration
             {
                 "ping" => () => Pinger.Run(), // ping service
                 "add" => async () => await ItemAdder.Run(), //add single item to cachy
-                "get" => () => ItemGetter.Run(), //get last revision
+                "get" => async () => await ItemGetter.Run(), //get last revision
                 "getwrong" => () => ItemGetterNotFound.Run(), //get item which doesn't exist
                 "older" => () => ItemGetterOlder.Run(), //get older revision
                 "olderwrong" => () => ItemGetterOlder.Run(), //get older revison which doesn't exist
@@ -56,18 +57,21 @@ namespace Cachy.CommunicationIntegration
     }
     public class ItemGetter
     {
-        public static void Run()
+        public async static Task Run()
         {
             System.Console.WriteLine("I will retrieve item : yello");
-            Channel channel = new Channel("127.0.0.1:5001", ChannelCredentials.Insecure);
-
-            var client = new GetItem.GetItemClient(channel);
-            var res = client.Get(new ItemToRetrieve
+            ICachy cachy = new CachyClient.Cachy();
+            try
             {
-                Name = "yello"
-            });
-            System.Console.WriteLine($"res:{res}");
-            channel.ShutdownAsync().Wait();
+                var data = await cachy.Get("test_1");
+                System.Console.WriteLine($"Recieved :{data.Length} bytes");
+                System.Console.WriteLine($"Recieved content = {System.Text.Encoding.UTF8.GetString(data)}");
+            }
+            catch (KeyNotFoundException)
+            {
+
+                System.Console.WriteLine("given key was not found");
+            }
 
         }
     }
@@ -130,10 +134,10 @@ namespace Cachy.CommunicationIntegration
         {
             System.Console.WriteLine("Trying to add stuff");
             ICachy cachy = new CachyClient.Cachy();
-            foreach (var item in Enumerable.Range(1, 6000))
+            foreach (var item in Enumerable.Range(1, 600))
             {
                 await cachy.Add($"test_{item.ToString()}", Encoding.UTF8.GetBytes($"yello_{item.ToString()}"), 60);
-                System.Console.WriteLine($"Managed to add item still to do {6000 - item} ");
+                System.Console.WriteLine($"Managed to add item still to do {600 - item} ");
                 // await Task.Delay(1);
             }
             System.Console.WriteLine($"Managed to add item ");

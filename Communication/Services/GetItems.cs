@@ -51,13 +51,7 @@ namespace Cachy.Communication.Services
             {
                 return new RetrievedItem
                 {
-                    Item = new Item
-                    {
-                        Data = ByteString.CopyFrom(new byte[] { 0 }),
-                        Name = "Not Found",
-                        Ttl = new TimeToLive { Seconds = 0 },
-
-                    }
+                    Item = new Item()
                 };
             }
         }

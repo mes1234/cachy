@@ -3,6 +3,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 using Cachy.Events;
+using CachyClient.Common;
 using Grpc.Core;
 
 namespace CachyClient
@@ -36,9 +37,20 @@ namespace CachyClient
                   );
         }
 
-        public Task<byte[]> Get(string name)
+        public async Task<byte[]> Get(string name)
         {
-            throw new NotImplementedException();
+            var result = await _getItemClient.GetAsync(
+                  new ItemToRetrieve
+                  {
+                      Name = name,
+                      // There is always first revision assigned 
+                      // if set to zer it means use latest from snapshot
+                      Revision = 0
+                  }
+              );
+            if (result.Item.Data.Length == 0) throw new KeyNotFoundException();
+
+            return result.Item.Data.ToByteArray();
         }
 
         public Task<byte[]> Get(string name, int revision)

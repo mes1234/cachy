@@ -78,7 +78,7 @@ namespace Cachy.Storage
                 {
 
                     _repository.CheckTtl();
-                    await Task.Delay(100);
+                    await Task.Delay(10);
 
                 }
                 catch (Exception ex)
