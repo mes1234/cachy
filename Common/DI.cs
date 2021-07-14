@@ -20,6 +20,7 @@ namespace Cachy.Common
             services.AddTransient<IConverter<ItemEntinty, SnapshotStorageItemEntinty>, SnapshotItemEntintyConverter>();
             services.AddTransient<IConverter<RequestForItem, SnapshotRequestForItem>, SnapshotRequestForItemConverter>();
             services.AddTransient<IConverter<RequestForItem, LongTermStorageRequestForItem>, LongTermStorageRequestConverter>();
+            services.AddTransient<IConverter<ItemToRemoveEntity, ValidatedItemToRemoveEntity>, SnapshotItemToRemoveConverted>();
 
         }
     }

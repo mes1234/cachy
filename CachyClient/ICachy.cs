@@ -11,6 +11,6 @@ namespace CachyClient
 
         Task<byte[]> Get(string name, int revision);
 
-        Task<bool> Remove(string name);
+        Task Remove(string name);
     }
 }

@@ -44,7 +44,7 @@ namespace CachyClient
                   {
                       Name = name,
                       // There is always first revision assigned 
-                      // if set to zer it means use latest from snapshot
+                      // if set to zero it means use latest from snapshot
                       Revision = 0
                   }
               );
@@ -53,14 +53,26 @@ namespace CachyClient
             return result.Item.Data.ToByteArray();
         }
 
-        public Task<byte[]> Get(string name, int revision)
+        public async Task<byte[]> Get(string name, int revision)
         {
-            throw new NotImplementedException();
+            var result = await _getItemClient.GetAsync(
+                  new ItemToRetrieve
+                  {
+                      Name = name,
+                      Revision = revision
+                  }
+              );
+            if (result.Item.Data.Length == 0) throw new KeyNotFoundException();
+
+            return result.Item.Data.ToByteArray();
         }
 
-        public Task<bool> Remove(string name)
+        public async Task Remove(string name)
         {
-            throw new NotImplementedException();
+            await _removeItemClient.RemoveAsync(
+               new ItemToRemove
+               { Name = name }
+           );
         }
     }
 }

@@ -18,6 +18,19 @@ namespace Cachy.Common.Converter
             };
         }
     }
+
+    public class SnapshotItemToRemoveConverted : IConverter<ItemToRemoveEntity, ValidatedItemToRemoveEntity>
+    {
+        public ValidatedItemToRemoveEntity Convert(ItemToRemoveEntity item)
+        {
+            return new ValidatedItemToRemoveEntity
+            {
+                Name = item.Name
+            };
+        }
+    }
+
+
     public class SnapshotRequestForItemConverter : IConverter<RequestForItem, SnapshotRequestForItem>
     {
 
