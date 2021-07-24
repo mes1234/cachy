@@ -17,16 +17,13 @@ namespace Cachy.Communication.Services
             _queue = Queue;
         }
 
-        private RetrievedItem TimeOutResponse()
+        private RetrievedItem FailedResponse()
         {
             return new RetrievedItem
             {
                 Item = new Item
                 {
-                    Data = ByteString.CopyFrom(new byte[] { 0 }),
-                    Name = "Timeout",
-                    Ttl = new TimeToLive { Seconds = 0 },
-
+                    Name = "Not Found"
                 }
             };
         }
@@ -68,7 +65,7 @@ namespace Cachy.Communication.Services
 
             // Define start time and maximum allowed time for processing
             var start = DateTime.Now;
-            var timeout = TimeSpan.FromSeconds(2);
+            var timeout = TimeSpan.FromSeconds(2000);
 
             // Start waiting loop 
             item.Waiter = Task.Run(async () =>
@@ -87,7 +84,7 @@ namespace Cachy.Communication.Services
 
             // Return response
             if (item.Result == null)
-                return TimeOutResponse();
+                return FailedResponse();
             else
                 return HandleResponse(item.Result);
 
