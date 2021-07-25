@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Cachy.Common;
 using System.Linq;
 
-namespace Cachy.Storage.EventSource
+namespace Cachy.Storage.Persistance
 {
     public interface IRepository<T>
         where T : IStoredEntity, new()

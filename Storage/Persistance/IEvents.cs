@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Cachy.Common;
 
-namespace Cachy.Storage.EventSource
+namespace Cachy.Storage.Persistance
 {
 
 

@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 using System.Collections.Concurrent;
 using Cachy.Common.Maybe;
 using Cachy.Common;
-using Cachy.Storage.EventSource;
+using Cachy.Storage.Persistance;
 
 namespace Cachy.Storage.Snapshot.Worker
 {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cachy.Common;
 
-namespace Cachy.Storage.EventSource
+namespace Cachy.Storage.Persistance
 {
     public class Snapshot<T>
       where T : IEntity, new()
@@ -32,7 +32,7 @@ namespace Cachy.Storage.EventSource
 
             }
 
-            if ((DateTime.Now - item.Timestamp).TotalSeconds > item.TTL) // TODO why this is setting Active to false?
+            if ((DateTime.Now - item.Timestamp).TotalSeconds > item.TTL)
             {
                 Remove(item.Name);
             }
