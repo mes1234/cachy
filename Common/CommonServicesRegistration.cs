@@ -11,9 +11,11 @@ namespace Cachy.Common
         {
             services.AddTransient<MaybeFactory>();
             services.AddTransient(typeof(Maybe<,>));
+
             // containers for handlers
             services.AddSingleton<ConcurrentBag<IHandler>>(new ConcurrentBag<IHandler>());
-            // central message bus for system 
+
+            // central message bus for system
             services.AddSingleton<ConcurrentQueue<IEntity>>(new ConcurrentQueue<IEntity>());
 
             services.AddTransient<IConverter<ItemEntinty, LongTermStorageItemEntinty>, LongTermStorageItemEntintyConverter>();
@@ -21,7 +23,6 @@ namespace Cachy.Common
             services.AddTransient<IConverter<RequestForItem, SnapshotRequestForItem>, SnapshotRequestForItemConverter>();
             services.AddTransient<IConverter<RequestForItem, LongTermStorageRequestForItem>, LongTermStorageRequestConverter>();
             services.AddTransient<IConverter<ItemToRemoveEntity, ValidatedItemToRemoveEntity>, SnapshotItemToRemoveConverted>();
-
         }
     }
 }

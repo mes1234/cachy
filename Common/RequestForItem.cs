@@ -16,5 +16,6 @@ namespace Cachy.Common
     }
 
     public record LongTermStorageRequestForItem : RequestForItem { }
+
     public record SnapshotRequestForItem : RequestForItem { }
 }

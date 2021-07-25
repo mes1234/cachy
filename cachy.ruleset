@@ -1,0 +1,13 @@
+<RuleSet Name="Rules for Cachy Project" Description="Code analysis rules for Cachy Project" ToolsVersion="15.0">
+   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
+     <Rule Id="SA1210" Action="None"/><!--The using directives within a C# code file are not sorted alphabetically by namespace-->
+     <Rule Id="SA1200" Action="None"/><!--Using directive should appear within a namespace declaration-->
+     <Rule Id="SA1633" Action="None"/><!--The file header is missing or not located at the top of the file-->
+     <Rule Id="SA0001" Action="None"/><!--XML comment analysis is disabled due to project configuration-->
+     <Rule Id="SA1201" Action="None"/><!--A field should not follow a property-->
+     <Rule Id="SA1101" Action="None"/><!--Prefix local calls with this-->
+     <Rule Id="SA1309" Action="None"/><!--Field should not begin with an underscore-->
+     <Rule Id="SA1503" Action="None"/><!--Braces should not be omitted-->
+     <Rule Id="AD0001" Action="None"/><!--Records-->
+   </Rules>
+</RuleSet>

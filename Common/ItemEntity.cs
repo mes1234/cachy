@@ -22,15 +22,15 @@ namespace Cachy.Common
     }
 
     public record ValidatedItemToRemoveEntity : ItemToRemoveEntity { }
+
     public record LongTermStorageItemEntinty : ItemEntinty { }
+
     public record SnapshotStorageItemEntinty : ItemEntinty { }
+
     public record StoredItemEntity : ItemEntinty, IStoredEntity
     {
         public int Revision { get; set; }
 
-        public IStoredEntity CopyAndDeactivate()
-        {
-            return this with { Active = false };
-        }
+        public IStoredEntity CopyAndDeactivate() => this with { Active = false };
     }
 }

@@ -1,18 +1,15 @@
-using System;
-using System.Collections.Generic;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Cachy.Communication;
 using Cachy.Dispatcher;
 using Cachy.Storage;
 using Cachy.Common;
 using Cachy.Storage.Snapshot.Worker;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Cachy
 {
     public class Program
     {
-
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
@@ -31,8 +28,6 @@ namespace Cachy
                     CommonServicesRegistration.Register(services);
                     DispatcherServicesRegistration.Register(services);
                     StorageServicesRegistration.Register(services);
-
                 });
     }
 }
-

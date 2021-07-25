@@ -1,7 +1,7 @@
 namespace Cachy.Common.Converter
 {
-    public interface IConverter<T, U>
+    public interface IConverter<T1, T2>
     {
-        U Convert(T item);
+        T2 Convert(T1 item);
     }
 }

@@ -1,10 +1,7 @@
 namespace Cachy.Common
 {
-
-    public interface IValidator<T, U>
+    public interface IValidator<T1, T2>
     {
-        public bool Validate(T obj);
+        public bool Validate(T1 obj);
     }
-
-
 }

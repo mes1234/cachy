@@ -4,14 +4,16 @@ namespace Cachy.Common.Maybe
 {
     public class MaybeFactory
     {
-        public IServiceProvider _serviceProvider { get; set; }
         public MaybeFactory(IServiceProvider serviceProvider)
         {
-            _serviceProvider = serviceProvider;
+            this.ServiceProvider = serviceProvider;
         }
-        public Maybe<T, U> GetMaybe<T, U>(T item)
+
+        public IServiceProvider ServiceProvider { get; set; }
+
+        public Maybe<T1, T2> GetMaybe<T1, T2>(T1 item)
         {
-            var res = (Maybe<T, U>)_serviceProvider.GetService(typeof(Maybe<T, U>));
+            var res = (Maybe<T1, T2>)this.ServiceProvider.GetService(typeof(Maybe<T1, T2>));
             res.Value = item;
             return res;
         }
