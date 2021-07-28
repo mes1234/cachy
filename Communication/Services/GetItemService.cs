@@ -1,61 +1,24 @@
+using System.Collections.Concurrent;
+using System;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Google.Protobuf;
 using Cachy.Events;
 using Cachy.Common;
-using System.Collections.Concurrent;
-using System.Threading;
-using System;
 
 namespace Cachy.Communication.Services
 {
-    class GetItemService : GetItem.GetItemBase
+    public class GetItemService : GetItem.GetItemBase
     {
         private readonly ConcurrentQueue<IEntity> _queue;
-        public GetItemService(ConcurrentQueue<IEntity> Queue)
-        {
-            _queue = Queue;
-        }
 
-        private RetrievedItem FailedResponse()
+        public GetItemService(ConcurrentQueue<IEntity> queue)
         {
-            return new RetrievedItem
-            {
-                Item = new Item
-                {
-                    Name = "Not Found"
-                }
-            };
-        }
-
-        private RetrievedItem HandleResponse(object result)
-        {
-            var res = (ItemEntinty)result;
-
-            if (res.Defined)
-            {
-                return new RetrievedItem
-                {
-                    Item = new Item
-                    {
-                        Data = ByteString.CopyFrom(res.Data),
-                        Name = res.Name,
-                        Ttl = new TimeToLive { Seconds = res.TTL }
-                    }
-                };
-            }
-            else
-            {
-                return new RetrievedItem
-                {
-                    Item = new Item()
-                };
-            }
+            _queue = queue;
         }
 
         public override async Task<RetrievedItem> Get(ItemToRetrieve request, ServerCallContext context)
         {
-
             // Prepare request for new item
             var item = new RequestForItem
             {
@@ -67,7 +30,7 @@ namespace Cachy.Communication.Services
             var start = DateTime.Now;
             var timeout = TimeSpan.FromSeconds(2000);
 
-            // Start waiting loop 
+            // Start waiting loop
             item.Waiter = Task.Run(async () =>
              {
                  while (item.Result == null && ((DateTime.Now - start) < timeout))
@@ -87,7 +50,42 @@ namespace Cachy.Communication.Services
                 return FailedResponse();
             else
                 return HandleResponse(item.Result);
+        }
 
+        private RetrievedItem FailedResponse()
+        {
+            return new RetrievedItem
+            {
+                Item = new Item
+                {
+                    Name = "Not Found",
+                },
+            };
+        }
+
+        private RetrievedItem HandleResponse(object result)
+        {
+            var res = (ItemEntinty)result;
+
+            if (res.Defined)
+            {
+                return new RetrievedItem
+                {
+                    Item = new Item
+                    {
+                        Data = ByteString.CopyFrom(res.Data),
+                        Name = res.Name,
+                        Ttl = new TimeToLive { Seconds = res.TTL },
+                    },
+                };
+            }
+            else
+            {
+                return new RetrievedItem
+                {
+                    Item = new Item(),
+                };
+            }
         }
     }
 }

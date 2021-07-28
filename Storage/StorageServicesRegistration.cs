@@ -1,4 +1,3 @@
-
 using Cachy.Common;
 using Cachy.Storage.Persistance;
 using Cachy.Storage.LongTerm.Validation.Inbound;
@@ -16,7 +15,6 @@ namespace Cachy.Storage
             services.AddTransient<IValidator<ItemEntinty, LongTermStorageItemEntinty>, LTSItemEntintyValidator>();
             services.AddTransient<IValidator<RequestForItem, LongTermStorageRequestForItem>, LTSRequestForItemValidator>();
             services.AddTransient<IValidator<RequestForItem, SnapshotRequestForItem>, SnapshotRequestForItemValidator>();
-
         }
     }
 }

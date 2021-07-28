@@ -1,4 +1,5 @@
 using Cachy.Common;
+
 namespace Cachy.Storage.LongTerm.Validation.Inbound
 {
     public class ValidatedItemToRemoveValidator : IValidator<ItemToRemoveEntity, ValidatedItemToRemoveEntity>

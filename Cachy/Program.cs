@@ -24,7 +24,6 @@ namespace Cachy
                     services.AddHostedService<SnapshotStorage>();
                     services.AddHostedService<Orchestrator>();
 
-                    CommunicationServicesRegistration.Register(services);
                     CommonServicesRegistration.Register(services);
                     DispatcherServicesRegistration.Register(services);
                     StorageServicesRegistration.Register(services);

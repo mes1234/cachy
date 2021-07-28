@@ -1,11 +1,10 @@
-﻿using System;
+﻿using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Microsoft.Extensions.Hosting;
 using Cachy.Events;
 using Cachy.Communication.Services;
-using System.Collections.Concurrent;
 using Cachy.Common;
 
 namespace Cachy.Communication
@@ -17,25 +16,24 @@ namespace Cachy.Communication
         private readonly ConcurrentQueue<IEntity> _queue;
         private readonly string _host;
 
-        public Reciever(ConcurrentQueue<IEntity> Queue, int Port = 5001, string Host = "localhost")
+        public Reciever(ConcurrentQueue<IEntity> queue, int port = 5001, string host = "localhost")
         {
-            _port = Port;
-            _host = Host;
-            _queue = Queue;
-
+            _port = port;
+            _host = host;
+            _queue = queue;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             Server server = new Server
             {
-                Services = {
-                    PingPong.BindService(new PingPongService()),
-                    InsertItem.BindService(new  InsertItemService(_queue)),
+                Services =
+                {
+                    InsertItem.BindService(new InsertItemService(_queue)),
                     GetItem.BindService(new GetItemService(_queue)),
-                    RemoveItem.BindService(new RemoveItemService(_queue))
-                 },
-                Ports = { new ServerPort(_host, _port, ServerCredentials.Insecure) }
+                    RemoveItem.BindService(new RemoveItemService(_queue)),
+                },
+                Ports = { new ServerPort(_host, _port, ServerCredentials.Insecure) },
             };
             await Task.Run(() => server.Start());
             await Task.Delay(100000, stoppingToken);

@@ -1,21 +1,23 @@
+using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using Grpc.Core;
 using Cachy.Events;
 using Cachy.Common;
-using System.Collections.Concurrent;
 
 namespace Cachy.Communication.Services
 {
-    class InsertItemService : InsertItem.InsertItemBase
+    public class InsertItemService : InsertItem.InsertItemBase
     {
         private readonly ConcurrentQueue<IEntity> _queue;
-        public InsertItemService(ConcurrentQueue<IEntity> Queue)
+
+        public InsertItemService(ConcurrentQueue<IEntity> queue)
         {
-            _queue = Queue;
+            _queue = queue;
         }
+
         public override Task<Ack> InsertItem(Item request, ServerCallContext context)
         {
-            ItemEntinty item = new()
+            ItemEntinty item = new ItemEntinty
             {
                 Data = request.Data.ToByteArray(),
                 Name = request.Name,
@@ -27,7 +29,7 @@ namespace Cachy.Communication.Services
 
             return Task.FromResult(new Ack
             {
-                Revision = 0
+                Revision = 0,
             });
         }
     }

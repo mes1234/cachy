@@ -1,4 +1,5 @@
 using Cachy.Common;
+
 namespace Cachy.Storage.Snapshot.Validation.Inbound
 {
     public class SnapshotRequestForItemValidator : IValidator<RequestForItem, SnapshotRequestForItem>
