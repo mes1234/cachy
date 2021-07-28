@@ -4,7 +4,6 @@ namespace CachyClient
 {
     public interface ICachy
     {
-
         Task Add(string name, byte[] paylod, int ttl = 60 * 60);
 
         Task<byte[]> Get(string name);
