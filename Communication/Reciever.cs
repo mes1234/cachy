@@ -36,7 +36,10 @@ namespace Cachy.Communication
                 Ports = { new ServerPort(_host, _port, ServerCredentials.Insecure) },
             };
             await Task.Run(() => server.Start());
-            await Task.Delay(100000, stoppingToken);
+            while (true)
+            {
+                await Task.Delay(100000, stoppingToken);
+            }
         }
     }
 }
