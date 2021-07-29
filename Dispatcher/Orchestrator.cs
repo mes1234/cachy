@@ -9,16 +9,18 @@ namespace Cachy.Dispatcher
 {
     public class Orchestrator : BackgroundService
     {
-
         private readonly ConcurrentBag<IHandler> _handlers;
+
         private readonly ConcurrentQueue<IEntity> _queue;
+
         public Orchestrator(
-            ConcurrentBag<IHandler> Handlers,
-            ConcurrentQueue<IEntity> Queue)
+            ConcurrentBag<IHandler> handlers,
+            ConcurrentQueue<IEntity> queue)
         {
-            _handlers = Handlers;
-            _queue = Queue;
+            _handlers = handlers;
+            _queue = queue;
         }
+
         public async Task Schedule<T>(T item)
         where T : IEntity
         {
@@ -32,7 +34,6 @@ namespace Cachy.Dispatcher
                 {
                     System.Console.WriteLine(ex);
                 }
-
             }
         }
 

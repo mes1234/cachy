@@ -25,7 +25,6 @@ namespace Cachy
                     services.AddHostedService<Orchestrator>();
 
                     CommonServicesRegistration.Register(services);
-                    DispatcherServicesRegistration.Register(services);
                     StorageServicesRegistration.Register(services);
                 });
     }
