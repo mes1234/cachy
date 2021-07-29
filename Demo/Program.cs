@@ -25,6 +25,8 @@ namespace Demo
 
             await GetSnapshotAndThenOlderVerision(cachy);
 
+            await PerformanceTest(cachy);
+
         }
 
         async static Task AddAndGetSingle(ICachy cachy)
@@ -102,9 +104,10 @@ namespace Demo
             System.Console.WriteLine("End this demo \n---------------------\n");
         }
 
-        async static Task Add(ICachy cachy, string name, string item, int ttl = 3600)
+        async static Task Add(ICachy cachy, string name, string item, int ttl = 3600, bool silent = false)
         {
-            System.Console.WriteLine("Add single item");
+            if (!silent)
+                System.Console.WriteLine("Add single item");
 
             await cachy.Add(name, System.Text.Encoding.UTF8.GetBytes(item), ttl);
 
@@ -116,18 +119,39 @@ namespace Demo
             await cachy.Remove(name);
         }
 
-        async static Task Retrieve(ICachy cachy, string name, int revison)
+        async static Task Retrieve(ICachy cachy, string name, int revison, bool silent = false)
         {
             try
             {
-                System.Console.WriteLine($"Try to get {name} version {revison}");
+                if (!silent)
+                    System.Console.WriteLine($"Try to get {name} version {revison}");
                 var item = System.Text.Encoding.UTF8.GetString(await cachy.Get(name, revison));
-                System.Console.WriteLine($"I've recieved {item}");
+                if (!silent)
+                    System.Console.WriteLine($"I've recieved {item}");
             }
             catch (System.Exception)
             {
                 System.Console.WriteLine($"Nothing for {name} :(");
             }
+        }
+
+        async static Task PerformanceTest(ICachy cachy)
+        {
+            System.Console.WriteLine("Demo add 1k items");
+            var count = 1000;
+            foreach (var revision in Enumerable.Range(1, count))
+            {
+                await Add(cachy, "demo7", $"content_{revision}", 3600, true);
+            }
+
+
+            foreach (var revision in Enumerable.Range(1, count))
+            {
+                await Retrieve(cachy, "demo7", revision);
+            }
+
+
+            System.Console.WriteLine("End this demo \n---------------------\n");
         }
     }
 }
