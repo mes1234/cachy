@@ -1,23 +1,19 @@
-```mermaid
-classDiagram
-      Animal <|-- Duck
-      Animal <|-- Fish
-      Animal <|-- Zebra
-      Animal : +int age
-      Animal : +String gender
-      Animal: +isMammal()
-      Animal: +mate()
-      class Duck{
-          +String beakColor
-          +swim()
-          +quack()
-      }
-      class Fish{
-          -int sizeInFeet
-          -canEat()
-      }
-      class Zebra{
-          +bool is_wild
-          +run()
-      }
+#Cachy - KV store in C#
+
+Usage:
+build Server:
+```
+cd Cachy
+dotnet build -o ..\CachyServer
+cd ..
+cd CachyServer
+Cachy.exe
+```
+build Demo:
+```
+cd Demo
+dotnet build -o ..\CachyDemo
+cd ..
+cd CachyDemo
+Demo.exe
 ```
